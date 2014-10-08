@@ -1,7 +1,12 @@
 ###FTP
 /sftp-config.json
 
+### Base de datos
+/config.php
+
 ### OSX ###
 .DS_Store
 .AppleDouble
 .LSOverride
+
+fw/theme/
