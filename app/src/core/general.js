@@ -1,3 +1,4 @@
+var nivel_entrada=js_general.getAttribute("nivel_entrada");
 function datos_formulario($form){
     var unindexed_array = $form.serializeArray();
     var indexed_array = {};

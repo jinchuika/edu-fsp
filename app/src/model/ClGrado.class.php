@@ -1,5 +1,5 @@
 <?php
-class GnEscuela
+class ClGrado
 {
     
     function __construct($bd=null)
@@ -14,19 +14,19 @@ class GnEscuela
     }
     
     /**
-     * Lista todos los campos de todas las escuelas
-     * @param  array $filtros
+     * Lista todos los grados
+     * @param  array $filtro
      * @return array
      */
-    public function listar_escuela($filtros=null)
+    public function listar_grado($filtro=null)
     {
-        $respuesta = array();
-        $query = "select * from gn_escuela ";
+        $resultado = array();
+        $query = "select * from cl_grado ";
         $stmt = $this->bd->ejecutar($query);
-        while ($escuela = $this->bd->obtener_fila($stmt, 0)) {
-            array_push($respuesta, $escuela);
+        while ($grado = $this->bd->obtener_fila($stmt)) {
+            array_push($resultado, $grado);
         }
-        return $respuesta;
+        return $resultado;
     }
 }
 ?>

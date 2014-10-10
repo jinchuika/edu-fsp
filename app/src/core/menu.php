@@ -27,7 +27,7 @@ class Menu {
         }
         $menu_cnb = $this->add('CNB', array('url' => '#'));
         $smenu_plan = $menu_cnb->add('Planificador', array('url'=>'app/plan.php'));
-        $menu_perfil = $this->add('Perfil', array('url'=>'#', 'class="navbar-right"'));
+        $menu_perfil = $this->add('Perfil', array('url'=>'#', 'class'=>'navbar-right'));
         $menu_perfil->add('Cerrar sesión', 'includes/libs/logout.php');
     }
     
