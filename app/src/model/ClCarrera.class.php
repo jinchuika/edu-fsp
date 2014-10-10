@@ -1,5 +1,5 @@
 <?php
-class GnEscuela
+class ClCarrera
 {
     
     function __construct($bd=null)
@@ -14,19 +14,19 @@ class GnEscuela
     }
     
     /**
-     * Lista todos los campos de todas las escuelas
-     * @param  array $filtros
+     * Lista todas las carreras
+     * @param  array $filtro
      * @return array
      */
-    public function listar_escuela($filtros=null)
+    public function listar_carrera($filtro=null)
     {
-        $respuesta = array();
-        $query = "select * from gn_escuela ";
+        $resultado = array();
+        $query = "select * from cl_carrera ";
         $stmt = $this->bd->ejecutar($query);
-        while ($escuela = $this->bd->obtener_fila($stmt, 0)) {
-            array_push($respuesta, $escuela);
+        while ($carrera = $this->bd->obtener_fila($stmt)) {
+            array_push($resultado, $carrera);
         }
-        return $respuesta;
+        return $resultado;
     }
 }
 ?>

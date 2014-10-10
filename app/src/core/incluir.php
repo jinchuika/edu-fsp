@@ -35,7 +35,7 @@ class Incluir
                 $this->imprimir('js', 'fw/js/jquery.min.js');
                 break;
             case 'general':
-                $this->imprimir('js', 'app/src/core/general.js', array('nivel_entrada'=>$this->nivel));
+                $this->imprimir('js', 'app/src/core/general.js', array('nivel_entrada'=>$this->nivel, 'id'=>'js_general'));
                 break;
             case 'bs':
                 $this->imprimir('meta', 'name="viewport" content="width=device-width, initial-scale=1"');
@@ -60,6 +60,7 @@ class Incluir
                 break;
             case 'html_template':
                 $this->incluir('bs');
+                $this->incluir('general');
                 break;
             default:
                 # code...

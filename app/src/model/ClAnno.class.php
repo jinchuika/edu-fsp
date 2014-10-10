@@ -1,5 +1,5 @@
 <?php
-class GnEscuela
+class ClAnno
 {
     
     function __construct($bd=null)
@@ -14,19 +14,19 @@ class GnEscuela
     }
     
     /**
-     * Lista todos los campos de todas las escuelas
-     * @param  array $filtros
+     * Lista todos los años
+     * @param  array $filtro
      * @return array
      */
-    public function listar_escuela($filtros=null)
+    public function listar_anno($filtro=null)
     {
-        $respuesta = array();
-        $query = "select * from gn_escuela ";
+        $resultado = array();
+        $query = "select * from cl_anno ";
         $stmt = $this->bd->ejecutar($query);
-        while ($escuela = $this->bd->obtener_fila($stmt, 0)) {
-            array_push($respuesta, $escuela);
+        while ($anno = $this->bd->obtener_fila($stmt)) {
+            array_push($resultado, $anno);
         }
-        return $respuesta;
+        return $resultado;
     }
 }
 ?>
