@@ -5,7 +5,20 @@ function datos_formulario($form){
     var indexed_array = {};
 
     $.map(unindexed_array, function(index, i){
-        indexed_array[index['name']] = index['value'];
+        if(!indexed_array[index['name']]){
+            indexed_array[index['name']] = index['value'];
+        }
+        else{
+            if(typeof indexed_array[index['name']] === Array){
+                indexed_array[index['name']].push(index['value']);
+            }
+            else{
+                var index_temp = indexed_array[index['name']];
+                indexed_array[index['name']] = new Array();
+                indexed_array[index['name']].push(index_temp);
+                indexed_array[index['name']].push(index['value']);
+            }
+        }
     });
 
     return indexed_array;
@@ -68,7 +81,7 @@ function modal_carga_gn (nombre) {
     }
     var modal_carga = bootbox.dialog({
         title: "Procesando",
-        message: "<img src='"+nivel_entrada+"js/framework/select2/select2-spinner.gif'>"+
+        message: "<img src='"+nivel_entrada+"fw/theme/plugins/select2/select2-spinner.gif'>"+
         "<p>Por favor espere...</p>"
     });
     this.crear = function () {

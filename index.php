@@ -35,7 +35,13 @@ $libs = new Incluir($nivel_dir);
                         <div class="form-group">
                             <label class="col-md-4 control-label" for="login"></label>
                             <div class="col-md-4">
-                                <button id="login" name="login" class="btn btn-success">Iniciar sesión</button>
+                                <button type="submit" id="login" name="login" class="btn btn-success">Iniciar sesión</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="signup"></label>
+                            <div class="col-md-4">
+                                <a href="signup.php" id="signup" name="signup" class="btn btn-info">Registrarse</a>
                             </div>
                         </div>
                     </fieldset>

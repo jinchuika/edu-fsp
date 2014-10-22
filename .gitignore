@@ -3,6 +3,7 @@
 
 ### Base de datos
 /config.php
+includes/auth/config.php
 
 ### OSX ###
 .DS_Store

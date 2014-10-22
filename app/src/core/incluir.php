@@ -4,7 +4,7 @@
  * @uses Conf   la condiguración del servidor
  */
 class Incluir
-{       
+{
     var $nivel_entrada = 0;
     var $camino_relativo = '';
     private $lista_incluido = array();
@@ -50,12 +50,20 @@ class Incluir
                 $this->imprimir('css', 'fw/theme/plugins/font-awesome-4.2.0/css/font-awesome.min.css');
                 $this->imprimir('css', 'fw/theme/css/style.min.css');
                 $this->imprimir('css', 'fw/theme/plugins/select2/select2.css');
-                //$this->imprimir('css', 'fw/theme/css/style-responsive.min.css');
+                $this->imprimir('css', 'fw/theme/plugins/bootstrap-datepicker/css/datepicker.css');
+                $this->imprimir('css', 'fw/theme/plugins/bootstrap-datepicker/css/datepicker3.css');
+                $this->imprimir('css', 'fw/theme/plugins/gritter/css/jquery.gritter.css');
+                $this->imprimir('css', 'fw/theme/plugins/bs-validator/css/bootstrapValidator.min.css');
                 $this->imprimir('css', 'fw/theme/css/theme/default.css', array('id'=>'theme'));
+                
                 $this->imprimir('js', 'fw/theme/plugins/jquery-1.8.2/jquery-1.8.2.min.js');
                 $this->imprimir('js', 'fw/theme/plugins/bootstrap-3.2.0/js/bootstrap.min.js');
                 $this->imprimir('js', 'fw/js/bootbox.min.js');
                 $this->imprimir('js', 'fw/theme/plugins/select2/select2.js');
+                $this->imprimir('js', 'fw/theme/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js');
+                $this->imprimir('js', 'fw/theme/plugins/gritter/js/jquery.gritter.min.js');
+                $this->imprimir('js', 'fw/theme/plugins/bs-validator/js/bootstrapValidator.min.js');
+                $this->imprimir('js', 'fw/theme/plugins/bs-validator/js/language/es_ES.js');
                 break;
             case 'menu':
                 $this->incluir_clase('app/src/core/link.php');
