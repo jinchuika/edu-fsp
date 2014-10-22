@@ -2,17 +2,17 @@
 //Datos de configuración de la conexión a la base de datos
 
 //Servidor
-$host='normales.db.4794910.hostedresource.com';
+$host='';
 
 //Usuario
-$user='normales';
+$user='';
 
 //Password
-$password='Fun53P@!2';
+$password='';
 
 //Base de datos a utilizar
-$db='normales';
+$db='';
 
 //Qué sistema gestor de base de datos utilizamos, mysql, oracle, ...
-$dbType='mysql'
+$dbType=''
 ?>
