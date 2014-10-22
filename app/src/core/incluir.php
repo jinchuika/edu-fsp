@@ -42,6 +42,20 @@ class Incluir
                 $this->imprimir('css', 'fw/bs/css/bootstrap.min.css');
                 $this->incluir('jquery');
                 $this->imprimir('js', 'fw/bs/js/bootstrap.min.js');
+                $this->imprimir('js', 'fw/js/bootbox.min.js');
+                break;
+            case 'theme':
+                $this->imprimir('meta', 'name="viewport" content="width=device-width, initial-scale=1"');
+                $this->imprimir('css', 'fw/theme/plugins/bootstrap-3.2.0/css/bootstrap.min.css');
+                $this->imprimir('css', 'fw/theme/plugins/font-awesome-4.2.0/css/font-awesome.min.css');
+                $this->imprimir('css', 'fw/theme/css/style.min.css');
+                $this->imprimir('css', 'fw/theme/plugins/select2/select2.css');
+                //$this->imprimir('css', 'fw/theme/css/style-responsive.min.css');
+                $this->imprimir('css', 'fw/theme/css/theme/default.css', array('id'=>'theme'));
+                $this->imprimir('js', 'fw/theme/plugins/jquery-1.8.2/jquery-1.8.2.min.js');
+                $this->imprimir('js', 'fw/theme/plugins/bootstrap-3.2.0/js/bootstrap.min.js');
+                $this->imprimir('js', 'fw/js/bootbox.min.js');
+                $this->imprimir('js', 'fw/theme/plugins/select2/select2.js');
                 break;
             case 'menu':
                 $this->incluir_clase('app/src/core/link.php');
@@ -59,8 +73,11 @@ class Incluir
                 return Sesion::getInstance();
                 break;
             case 'html_template':
-                $this->incluir('bs');
+                $this->incluir('theme');
                 $this->incluir('general');
+                break;
+            case 'cnb_js':
+                $this->imprimir('js', 'app/js/cnb/Cnb.js');
                 break;
             default:
                 # code...
@@ -78,18 +95,18 @@ class Incluir
     {
         if(!in_array($archivo, $this->lista_incluido)){
             $texto_extra = '';
+            if(is_array($extra_param)){
+                foreach ($extra_param as $key => $param) {
+                    $texto_extra .= ' '.$key.'="'.$param.'" ';
+                }
+            }
             switch ($tipo) {
                 case 'js':
-                    if(is_array($extra_param)){
-                        foreach ($extra_param as $key => $param) {
-                            $texto_extra .= ' '.$key.'="'.$param.'" ';
-                        }
-                    }
                     echo '<script src="'.$this->nivel.$archivo.'" '.$texto_extra.' ></script>
                     ';
                     break;
                 case 'css':
-                    echo '<link href="'.$this->nivel.$archivo.'" rel="stylesheet"/>
+                    echo '<link href="'.$this->nivel.$archivo.'" rel="stylesheet" '.$texto_extra.' />
                     ';
                     break;
                 case 'meta':

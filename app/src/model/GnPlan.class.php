@@ -34,17 +34,21 @@ class GnPlan
      * @param  Array  $arr_filtro
      * @return Array
      */
-    public function buscar_plan($arr_filtro)
+    public function buscar_plan($arr_filtro, $campos='*')
     {
         if(is_array($arr_filtro)){
-            $condicion = ' where _id>0  ';
+            $condicion = ' where gn_plan._id>0  ';
             foreach ($arr_filtro as $key => $filtro) {
                 $condicion .= ' and '.$key.'="'.$filtro.'" ';
             }
         }
-        $query = "select * from gn_plan ".$condicion;
+        $query = "select ".$campos." from gn_plan 
+        inner join gn_clase on gn_clase._id=gn_plan.id_clase
+        ".$condicion;
+        
         $stmt = $this->bd->ejecutar($query);
         if($plan = $this->bd->obtener_fila($stmt)){
+            $plan['query'] = $query;
             return $plan;
         }
     }
