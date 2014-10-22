@@ -13,10 +13,14 @@ if(!empty($fn_nombre)){
         }
         echo json_encode($usuario->crear_usuario($args));
     }
+    elseif ($fn_nombre=='validar_nombre') {
+        echo json_encode($usuario->$fn_nombre(array('campo' => 'username', 'valor' =>$_GET['username'])));
+    }
+    elseif ($fn_nombre=='validar_mail') {
+        echo json_encode($usuario->validar_nombre(array('campo' => 'mail', 'valor' =>$_GET['mail']), 'usr_persona'));
+    }
     else{
-        if($usuario->$fn_nombre($args)){
-            echo json_encode(array('msj'=>'si'));
-        }
+        echo json_encode($usuario->$fn_nombre($args));
     }
 }
 ?>

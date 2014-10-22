@@ -30,7 +30,6 @@ class User
         $query = '
         call crearUsuario("'.$args['nombre'].'", "'.$args['apellido'].'", '.$args['id_genero'].', '.$args['id_escuela'].',"'.$args['username'].'", "'.$args['password'].'", "'.$args['mail'].'")
         ';
-        echo $query;
         $stmt = $this->bd->ejecutar($query, true);
         if($user = $this->bd->ejecutar_procedimiento($stmt)){
             $respuesta['msj']= 'si';
@@ -47,7 +46,7 @@ class User
             $query_activar = "insert into usr_activo (id_user, cadena) values (".$user['_id'].", '".$codigo_activacion."')";
             if($this->bd->ejecutar($query_activar, debug)){
                 $respuesta['codigo'] = $codigo_activacion;
-                $respuesta['correo'] = ($this->enviar_correo($args['mail'], $codigo_activacion) == true) ? 'si' : 'no';
+                //$respuesta['correo'] = ($this->enviar_correo($args['mail'], $codigo_activacion) == true) ? 'si' : 'no';
             }
             return $respuesta;
         }
@@ -73,6 +72,18 @@ class User
 
         if(mail($mail, "Activación de usuario", $mensaje, $header)){
             return true;
+        }
+    }
+
+    function validar_nombre($filtro, $tabla='user')
+    {
+        $query = "select _id from ".$tabla." where ".$filtro['campo']."='".$filtro['valor']."'";
+        $stmt = $this->bd->ejecutar($query);
+        if($this->bd->obtener_fila($stmt)){
+            return array('valid' => false, 'query'=>$query);
+        }
+        else{
+            return array('valid' => true, 'query'=>$query);
         }
     }
 }

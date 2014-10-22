@@ -21,7 +21,7 @@ Cnb.prototype.cargar_datos = function() {
         this.set_data(JSON.parse(localStorage.getItem('__CNB__')));
     }
     else{
-        this.cargar_remoto();
+        this.cargar_remoto(this);
     }
 };
 
@@ -29,26 +29,26 @@ Cnb.prototype.cargar_datos = function() {
  * Cargar el Cnb desde el servidor
  * @return {Array}
  */
-Cnb.prototype.cargar_remoto = function(callback) {
+Cnb.prototype.cargar_remoto = function(instancia_actual) {
     var respuesta = $.getJSON(this.nivel_dir+'app/src/libs_plan/cnb.php',
     {
         fn_nombre: 'abrir_cnb'
     })
     .done(function (cnb_recibido) {
         localStorage.setItem('__CNB__', JSON.stringify(cnb_recibido));
-        set_data(cnb_recibido);
+        set_data(cnb_recibido, instancia_actual);
         return cnb_recibido;
     });
     return respuesta;
 };
 
-function set_data(datos_obtenidos) {
-    this.arr_competencia = datos_obtenidos.arr_competencia;
-    this.arr_indicador = datos_obtenidos.arr_indicador;
-    this.arr_contenido = datos_obtenidos.arr_contenido;
-    this.arr_rel_contenido = datos_obtenidos.arr_rel_contenido;
-    this.arr_funsepa = datos_obtenidos.arr_funsepa;
-    this.arr_metodo = datos_obtenidos.arr_metodo;
+function set_data(datos_obtenidos, instancia_actual) {
+    instancia_actual.arr_competencia = datos_obtenidos.arr_competencia;
+    instancia_actual.arr_indicador = datos_obtenidos.arr_indicador;
+    instancia_actual.arr_contenido = datos_obtenidos.arr_contenido;
+    instancia_actual.arr_rel_contenido = datos_obtenidos.arr_rel_contenido;
+    instancia_actual.arr_funsepa = datos_obtenidos.arr_funsepa;
+    instancia_actual.arr_metodo = datos_obtenidos.arr_metodo;
 };
 
 /**

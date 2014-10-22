@@ -8,8 +8,11 @@ $libs->incluir_clase('app/src/model/GnPlan.class.php');
 $libs->incluir_clase('app/src/model/PlnRegistro.class.php');
 $libs->incluir_clase('app/src/model/GnClase.class.php');
 
-$fn_nombre = $_POST['fn_nombre'];
-$args = json_decode($_POST['args'], true);
+$libs->incluir_clase('includes/auth/Db.class.php');
+$libs->incluir_clase('includes/auth/Conf.class.php');
+
+$fn_nombre = !empty($_POST['fn_nombre']) ? $_POST['fn_nombre'] : $_GET['fn_nombre'];
+!empty($_POST['args']) ? $args = json_decode($_POST['args'], true) : json_decode($_GET['args'], true);
 
 if($fn_nombre=='buscar_plan'){
     echo json_encode(nuevo_plan($args['anno'], $args['grado'], $args['carrera'], $sesion->get('id_user')));
@@ -19,6 +22,22 @@ if($fn_nombre=='abrir_plan'){
     echo json_encode(abrir_plan($_POST['id_plan']));
 }
 
+if($fn_nombre=='crear_registro'){
+    echo json_encode(crear_registro($_POST['id_plan'], $args, Db::getInstance()));
+}
+
+if($fn_nombre=='borrar_registro'){
+    echo json_encode(borrar_registro($_POST['id_registro']));
+}
+
+/**
+ * Crea un nuevo plan o devuelve uno que tenga los mismos atributos
+ * @param  integet $anno
+ * @param  integet $grado
+ * @param  integet $carrera
+ * @param  integet $id_user
+ * @return Array
+ */
 function nuevo_plan($anno, $grado, $carrera, $id_user)
 {
     $respuesta = array('msj'=>'no');
@@ -41,6 +60,12 @@ function nuevo_plan($anno, $grado, $carrera, $id_user)
     return $respuesta;
 }
 
+/**
+ * Devuelve todos los datos de un plan y sus registros
+ * @param  integer $id_plan
+ * @uses abrir_registro()
+ * @return Array
+ */
 function abrir_plan($id_plan)
 {
     $gn_plan = new GnPlan();
@@ -49,6 +74,11 @@ function abrir_plan($id_plan)
     return $plan_actual;
 }
 
+/**
+ * Devuelve todos los registros para un plan indicado
+ * @param  integer $id_plan
+ * @return Array
+ */
 function abrir_registro($id_plan)
 {
     $pln_registro = new PlnRegistro();
@@ -57,11 +87,26 @@ function abrir_registro($id_plan)
         $arr_registro[$i]['arr_funsepa'] = $pln_registro->abrir_contenido_funsepa(array('id_registro'=> $arr_registro[$i]['_id']), 'id_funsepa');
         $arr_registro[$i]['arr_metodo'] = $pln_registro->abrir_metodo(array('id_registro'=> $arr_registro[$i]['_id']), 'id_metodo');
     }
-    foreach ($arr_registro as $registro_actual) {
-        //array_push($registro_actual, $pln_registro->abrir_contenido_funsepa(array('id_registro'=> $registro_actual['_id'])));
-        //$registro_actual['arr_funsepa'] = $pln_registro->abrir_contenido_funsepa(array('id_registro'=> $registro_actual['_id']));
-        //$registro_actual['arr_metodo'] = $pln_registro->abrir_metodo(array('id_registro'=> $registro_actual['_id']));
-    }
     return $arr_registro;
+}
+
+/**
+ * Crea un nuevo registro para un plan
+ * @param  integer $id_plan
+ * @param  Array  $args
+ * @return Array
+ */
+function crear_registro($id_plan, Array $args)
+{
+    $pln_registro = new PlnRegistro();
+    $args['id_plan'] = $id_plan;
+    $registro_nuevo = $pln_registro->crear_registro($args);
+    return $pln_registro->abrir_registro(array('_id'=>$registro_nuevo['_id']), true);
+}
+
+function borrar_registro($id_registro)
+{
+    $pln_registro = new PlnRegistro();
+    return $pln_registro->borrar_registro($id_registro);
 }
 ?>
