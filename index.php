@@ -7,8 +7,7 @@ $libs = new Incluir($nivel_dir);
 <html lang="es">
 <head>
     <?php
-    $libs->incluir('bs');
-    $libs->incluir('general');
+    $libs->incluir('html_template');
     ?>
     <meta charset="UTF-8">
     <title>Educación</title>

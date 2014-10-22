@@ -2,7 +2,7 @@
 /sftp-config.json
 
 ### Base de datos
-#/config.php
+/config.php
 
 ### OSX ###
 .DS_Store
