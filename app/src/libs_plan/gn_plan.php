@@ -30,6 +30,10 @@ if($fn_nombre=='borrar_registro'){
     echo json_encode(borrar_registro($_POST['id_registro']));
 }
 
+if($fn_nombre=='publicar_plan'){
+    echo json_encode(publicar_plan($_POST['id_plan'], $_POST['tipo']));
+}
+
 /**
  * Crea un nuevo plan o devuelve uno que tenga los mismos atributos
  * @param  integet $anno
@@ -108,5 +112,11 @@ function borrar_registro($id_registro)
 {
     $pln_registro = new PlnRegistro();
     return $pln_registro->borrar_registro($id_registro);
+}
+
+function publicar_plan($id_plan, $tipo=1)
+{
+    $gn_plan = new GnPlan();
+    return $gn_plan->publicar_plan($id_plan, $tipo);
 }
 ?>

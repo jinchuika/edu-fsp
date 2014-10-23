@@ -49,5 +49,24 @@ class GnClase
             return false;
         }
     }
+
+    public function abrir_clase($filtros, $campos='*')
+    {
+        if(is_array($filtros)){
+            $condicion = ' where _id>0  ';
+            foreach ($filtros as $key => $filtro) {
+                $condicion .= ' and '.$key.'="'.$filtro.'" ';
+            }
+        }
+        $query = "select ".$campos." from gn_clase ".$condicion;
+        $stmt = $this->bd->ejecutar($query);
+        if($clase = $this->bd->obtener_fila($stmt, 0)){
+            return $clase;
+        }
+        else{
+            return false;
+        }
+
+    }
 }
 ?>

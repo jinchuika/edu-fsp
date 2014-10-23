@@ -10,6 +10,7 @@ $bd = $libs->incluir('db');
 $menu = $libs->incluir('menu', array('nivel_dir'=>$nivel_dir, 'sesion'=>$sesion));
 $menu_exportar = $menu->add('Exportar plan', array('url'=>'#', 'class' => 'export'));
 $menu_exportar->add('Excel', array('url'=>'#', 'id'=>'btn_export', 'class' => 'export'));
+$menu_exportar->add('Publicar', array('url'=>'javascript:void(0)', 'id'=>'btn_public', 'externo'=>true));
 
 $libs->incluir_clase('app/src/model/ClAnno.class.php');
 $libs->incluir_clase('app/src/model/ClCarrera.class.php');
@@ -92,12 +93,12 @@ $cl_grado = new ClGrado($bd);
                 <table id="tabla_plan" class="table table-hover table-condensed table-bordered well">
                     <thead>
                         <tr>
-                            <th>Fecha</th>
-                            <th>Contenido MINEDUC</th>
-                            <th>Contenido FUNSEPA</th>
-                            <th>Actividad</th>
-                            <th>Recurso</th>
-                            <th>Método</th>
+                            <th>Fecha <span class="label label-warning lbl_public" style="display: none;">Público</span></th>
+                            <th>Contenido MINEDUC <span class="label label-warning lbl_public" style="display: none;">Público</span></th>
+                            <th>Contenido FUNSEPA <span class="label label-warning lbl_public" style="display: none;">Público</span></th>
+                            <th>Actividad <span class="label label-warning lbl_public" style="display: none;">Público</span></th>
+                            <th>Recurso <span class="label label-warning lbl_public" style="display: none;">Público</span></th>
+                            <th>Método <span class="label label-warning lbl_public" style="display: none;">Público</span></th>
                         </tr>
                     </thead>
                     <tbody id="tbody_plan">
@@ -167,4 +168,31 @@ $cl_grado = new ClGrado($bd);
     </div>
 </body>
 <?php $libs->imprimir('js', 'app/js/plan/index.js'); ?>
+<script>
+<?php
+$id_publica = $_GET['id'];
+if(!empty($id_publica)){
+    $libs->incluir_clase('app/src/model/GnPlan.class.php');
+    $libs->incluir_clase('app/src/model/GnClase.class.php');
+
+    $gn_plan = new GnPlan($bd);
+    $gn_clase = new GnClase($bd);
+
+    $plan_actual = $gn_plan->buscar_plan(array('gn_plan._id'=>$id_publica, 'public'=>1), 'gn_plan._id, id_clase');
+    if($plan_actual){
+        $clase_actual = $gn_clase->abrir_clase(array('_id'=>$plan_actual['id_clase']));
+
+        echo "$('#anno').val(".$clase_actual['id_anno'].");
+        ";
+        echo "$('#carrera').val(".$clase_actual['id_carrera'].");
+        ";
+        echo "$('#grado').val(".$clase_actual['id_grado'].");
+        ";
+        echo "abrir_plan(".$plan_actual['_id'].", true);";
+        echo "console.log(".$clase_actual['id_anno'].");";
+        echo 'console.log('.$plan_actual['id_clase'].');';
+    }
+}
+?>
+</script>
 </html>
