@@ -7,7 +7,7 @@ $libs = new Incluir($nivel_dir);
 $libs->incluir('menu');
 $libs->incluir_clase('app/src/model/GnEscuela.class.php');
 $bd = $libs->incluir('db');
-$menu = new Menu;
+$menu = $libs->incluir('menu', array('nivel_dir'=>$nivel_dir));
 
 ?>
 <!DOCTYPE html>
@@ -20,11 +20,12 @@ $menu = new Menu;
     <title>Nuevo usuario</title>
 </head>
 <body>
+    <?php echo $menu->imprimir(); ?>
     <div class="container">
         <div class="row">
             <div class="col-sm-2"></div>
             <div class="col-sm-8">
-                <form id="form_nuevo" class="form-horizontal well">
+                <form id="form_nuevo" action="javascript:return;" class="form-horizontal well">
                     <fieldset>
                         <legend>Registra un nuevo usuario</legend>
                         <div class="form-group">
@@ -68,28 +69,28 @@ $menu = new Menu;
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="username">Nombre de usuario</label>  
                     <div class="col-md-5">
-                        <input id="username" name="username" type="text" placeholder="" class="form-control input-md" required="">
+                        <input id="username" name="username" type="text" placeholder="" class="form-control input-md" required="required">
 
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="password">Contraseña</label>
                     <div class="col-md-5">
-                        <input id="password" name="password" type="password" placeholder="" class="form-control input-md" required="">
+                        <input id="password" name="password" type="password" placeholder="" class="form-control input-md" required="required">
 
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="password2">Repite la contraseña</label>
                     <div class="col-md-4">
-                        <input id="password2" name="password2" type="password" placeholder="" class="form-control input-md" required="">
+                        <input id="password2" name="password2" type="password" placeholder="" class="form-control input-md" required="required">
 
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="mail">Correo electrónico</label>  
                     <div class="col-md-5">
-                        <input id="mail" name="mail" type="email" placeholder="" class="form-control input-md" required="">
+                        <input id="mail" name="mail" type="email" placeholder="" class="form-control input-md" required="required">
 
                     </div>
                 </div>
@@ -159,6 +160,9 @@ $(document).ready(function () {
             },
             password: {
                 validators: {
+                    notEmpty: {
+                        message: 'Este campo es obligatorio'
+                    },
                     identical: {
                         field: 'password2',
                         message: 'Las contraseñas no coinciden'
@@ -167,6 +171,9 @@ $(document).ready(function () {
             },
             password2: {
                 validators: {
+                    notEmpty: {
+                        message: 'Este campo es obligatorio'
+                    },
                     identical: {
                         field: 'password',
                         message: 'Las contraseñas no coinciden'
@@ -175,7 +182,7 @@ $(document).ready(function () {
             }
         }
     })
-    .on( 'submit' ,function (e) {
+    .on('success.form.bv' ,function (e) {
         e.preventDefault();
         $.ajax({
             url: 'app/src/libs_usr/user.php',
@@ -195,8 +202,8 @@ $(document).ready(function () {
                     }, 2500);
                 }
             }
-        })
-    });
+        });
+});
 });
 </script>
 </html>
