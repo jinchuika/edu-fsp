@@ -1,7 +1,6 @@
 <?php
 require_once("../auth/Sesion.class.php");
-	
-$sesion = Sesion::getInstance();
+$sesion = Sesion::getInstance(null, '../../');
 $usuario = $sesion->get("id_user");
 if(!empty($usuario))
 {

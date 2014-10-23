@@ -2,6 +2,11 @@
 $nivel_dir = 0;
 require_once("app/src/core/incluir.php");
 $libs = new Incluir($nivel_dir);
+$sesion = $libs->incluir('sesion');
+if($sesion->get('id_user')){
+    header( 'Location: app');
+}
+//$sesion->validar_acceso('', 'app');
 ?>
 <!DOCTYPE html>
 <html lang="es">

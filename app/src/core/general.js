@@ -96,3 +96,9 @@ function modal_carga_gn (nombre) {
     }
     return this;
 }
+
+function formato_fecha(fecha_str)
+{
+    nueva_fecha = fecha_str.split("-");
+    return nueva_fecha[2]+ "/" +nueva_fecha[1]+ "/" +nueva_fecha[0];
+}

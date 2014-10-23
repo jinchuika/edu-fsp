@@ -62,4 +62,5 @@ Cnb.prototype.set_data = function(datos_obtenidos) {
     this.arr_rel_contenido = datos_obtenidos.arr_rel_contenido;
     this.arr_funsepa = datos_obtenidos.arr_funsepa;
     this.arr_metodo = datos_obtenidos.arr_metodo;
+    this.en_uso = {};
 };
