@@ -70,7 +70,7 @@ class Incluir
                 $this->incluir_clase('app/src/core/link.php');
                 $this->incluir_clase('app/src/core/item.php');
                 $this->incluir_clase('app/src/core/menu.php');
-                return new Menu($extra['nivel_dir']);
+                return new Menu($extra['nivel_dir'], $extra['sesion']);
                 break;
             case 'db':
                 $this->incluir_clase('includes/auth/Conf.class.php');

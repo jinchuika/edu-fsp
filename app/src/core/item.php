@@ -74,7 +74,7 @@ class Item_menu {
 	 * @param  string|array  $options
 	 * @return void
 	 */
-	public function add($title, $options)
+	public function add($title, $options, $externo=false)
 	{
 		if( !is_array($options) ) {
 			$options = array('url' => $options);
