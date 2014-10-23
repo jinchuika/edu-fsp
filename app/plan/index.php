@@ -1,9 +1,12 @@
 <?php
 $nivel_dir = 2;
 require_once("../src/core/incluir.php");
-
 $libs = new Incluir($nivel_dir);
+
 $menu = $libs->incluir('menu', array('nivel_dir'=>$nivel_dir));
+$menu_exportar = $menu->add('Exportar plan', array('url'=>'#', 'class' => 'export'));
+$menu_exportar->add('Excel', array('url'=>'#', 'id'=>'btn_export', 'class' => 'export'));
+
 $sesion = $libs->incluir('sesion');
 $sesion->validar_acceso();
 $bd = $libs->incluir('db');
@@ -64,7 +67,12 @@ $cl_grado = new ClGrado($bd);
                             <label class="col-md-4 control-label" for="grado">Grado</label>
                             <div class="col-md-4">
                                 <select id="grado" name="grado" class="form-control col-sm-12">
-
+                                    <?php
+                                    foreach ($cl_grado->listar_grado() as $key => $grado) {
+                                        echo '<option data-descripcion="'.$grado['grado'].'" data-id_carrera="'.$grado['id_carrera'].'" value="'.$grado['_id'].'">'.$grado['grado'].'</option>
+                                        ';
+                                    }
+                                    ?>
                                 </select>
                             </div>
                         </div>
@@ -123,7 +131,7 @@ $cl_grado = new ClGrado($bd);
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="n_contenido">Contenido CNB</label>
                     <div class="col-md-5">
-                        <select id="n_contenido" name="n_contenido" class="form-control select_cnb">
+                        <select id="n_contenido" name="n_contenido" class="form-control select_cnb" required="">
                         </select>
                     </div>
                 </div>
@@ -158,232 +166,5 @@ $cl_grado = new ClGrado($bd);
         </form>
     </div>
 </body>
-<script>
-var __CNB__ = new Cnb();
-__CNB__.cargar_datos();
-var modal_c = modal_carga_gn();
-var modal_form = [];
-modal_c.crear();
-
-function abrir_plan (id_plan) {
-    modal_c.mostrar();
-    $.ajax({
-        url: nivel_entrada+'app/src/libs_plan/gn_plan.php',
-        type: 'post',
-        data: {
-            fn_nombre: 'abrir_plan',
-            id_plan: id_plan
-        },
-        success: function (respuesta) {
-            var plan_actual = $.parseJSON(respuesta);
-            $("#tabla_plan").find("tr:gt(0)").remove();
-            $.each(plan_actual.arr_registro, function (index, registro_actual) {
-                abrir_registro(registro_actual, 'tbody_plan');
-            });
-            habilitar_reg();
-            $('#tabla_plan').show();
-            __CNB__.plan_actual = plan_actual;
-            $('#btn_registro').show();
-            modal_c.ocultar();
-        }
-    });
-}
-
-function abrir_registro (registro, objetivo) {
-    var s_fecha = '<td id="fecha_'+registro._id+'">'+registro.fecha+'</td>';
-    var s_contenido = '<td id="contenido_'+registro._id+'">'+getObjects(__CNB__.arr_contenido, '_id', registro.id_contenido)[0].descripcion+'</td>';
-    var s_funsepa = '<td>';
-    for (var i = 0; i < registro.arr_funsepa.length; i++) {
-        s_funsepa += getObjects(__CNB__.arr_funsepa, '_id', registro.arr_funsepa[i].id_funsepa)[0].descripcion+', ';
-    };
-    s_funsepa += '</td>';
-    var s_metodo = '<td>';
-    for (var i = 0; i < registro.arr_metodo.length; i++) {
-        s_metodo += getObjects(__CNB__.arr_metodo, '_id', registro.arr_metodo[i].id_metodo)[0].descripcion+', ';
-    };
-    s_metodo += '</td>';
-    var s_actividad = '<td id="actividad_'+registro._id+'">'+registro.actividad+'</td>';
-    var s_recurso = '<td id="recurso_'+registro._id+'">'+registro.recurso+'</td>';
-    $('#'+objetivo).append('<tr id="tr_'+registro._id+'">'+s_fecha+s_contenido+s_funsepa+s_actividad+s_recurso+s_metodo+'</tr>');
-    var s_drop = '<div class="dropdown">'+
-    '<a data-toggle="dropdown" href="#"><span class="caret"></span></a>'+
-    '<ul class="dropdown-menu" role="menu">'+
-    '<li><a href="#" class="btn_editar_reg" data-id="'+registro._id+'">Editar</a></li>'+
-    '<li><a href="#" class="btn_borrar_reg" data-id="'+registro._id+'">Borrar</a></li>'+
-    '</ul>'+
-    '</div>';
-    $('#fecha_'+registro._id).append(s_drop);
-}
-
-function habilitar_reg () {
-    $('.btn_editar_reg').off().on('click', function () {
-        editar_registro($(this).data('id'));
-    });
-    $('.btn_borrar_reg').off().on('click', function () {
-        borrar_registro($(this).data('id'));
-    });
-}
-
-function editar_registro (id_registro) {
-    console.log('Editato: '+id_registro);
-}
-
-/**
- * Borra el registro
- * @param  {integer} id_registro
- * @return
- */
-function borrar_registro (id_registro) {
-    bootbox.confirm('¿Está seguro de que desea borrar ese registro?', function (respuesta) {
-        if(respuesta===true){
-            $.post(nivel_entrada+'app/src/libs_plan/gn_plan.php?fn_nombre=borrar_registro', {
-                id_registro: id_registro
-            }, function (respuesta) {
-                if(respuesta.msj=='si'){
-                    $('#tr_'+id_registro).remove();
-                    $.gritter.add({
-                        title: 'Eliminado',
-                        text: 'El registro se eliminó'
-                    });
-                }
-                //(respuesta.msj=='si' ? $('#tr_'+id_registro).remove() : console.log('No se eliminó'));
-            },
-            'json');
-        }
-    });
-}
-
-/**
- * Llena un select
- * @param  {DOM.Element} el
- * @param  {Array} items
- * @return {[type]}       [description]
- */
- function populateSelect(id_elemento, items, usar_select2) {
-    $('#'+id_elemento).empty();
-    $.each(items, function (index, item) {
-        $('#'+id_elemento).append('<option value="'+item._id+'">'+item.descripcion+'</option>');
-    });
-    $('#'+id_elemento).trigger('change');
-    !usar_select2 ? '' : $('#'+id_elemento).select2();
-}
-
-/**
- * Llena los selects del formulario para un registro
- */
- function poblar_formulario () {
-    //Poblar métodos
-    populateSelect('n_metodo', __CNB__.arr_metodo, true);
-    //Poblar indicadores
-    $('#n_comp').off().on('change', function () {
-        populateSelect('n_indicador', getObjects(__CNB__.arr_indicador, 'id_competencia', $(this).val()), true);
-    });
-    //Poblar contenido de mineduc
-    $('#n_indicador').off().on('change', function (value) {
-        populateSelect('n_contenido', getObjects(__CNB__.arr_contenido, 'id_indicador', $(this).val()), true);
-    });
-    //Poblar contenido de funsepa
-    $('#n_contenido').off().on('change', function (value) {
-        var arr_rel_funsepa = getObjects(__CNB__.arr_rel_contenido, 'id_mineduc', $(this).val())
-        , arr_funsepa = {};
-        for (var i = 0, reg_funsepa=[]; i < arr_rel_funsepa.length; i++) {
-            reg_funsepa = getObjects(__CNB__.arr_funsepa, '_id', arr_rel_funsepa[i].id_funsepa);
-            arr_funsepa[i] = reg_funsepa[0];
-        };
-        populateSelect('n_funsepa', arr_funsepa, true);
-    });
-    //Poblar competencias
-    populateSelect('n_comp', getObjects(__CNB__.arr_competencia, 'id_grado', __CNB__.plan_actual.id_grado), true);
-    
-}
-
-$(document).ready(function () {
-    $('#form_clase').submit(function (e) {
-        e.preventDefault();
-
-        modal_c.mostrar();
-        $('#tabla_plan').hide();
-        $('#btn_registro').hide();
-        
-        $.ajax({
-            url: nivel_entrada+'app/src/libs_plan/gn_plan.php',
-            type: 'post',
-            data: {
-                fn_nombre: 'buscar_plan',
-                args: JSON.stringify(datos_formulario($('#form_clase')))
-            },
-            success: function (respuesta) {
-                var respuesta = $.parseJSON(respuesta);
-                if(respuesta.msj=='si'){
-                    abrir_plan(respuesta._id);
-                }
-            }
-        });
-    });
-
-    $('#btn_registro').on('click', function () {
-        bootbox.dialog({
-            title: 'Nuevo registro',
-            message: $('#form_registro'),
-            show: false
-        }).on('shown.bs.modal', function() {
-            poblar_formulario();
-            $('#n_fecha', this).datepicker()
-            .prev('.btn').on('click', function (e) {
-                e && e.preventDefault();
-                $('#n_fecha', this).focus();
-            });
-            $('#form_registro').show().bootstrapValidator({
-                fields:{
-                    n_fecha:{
-                        validators: {
-                            notEmpty: {
-                            },
-                            date: {
-                                format: 'DD/MM/YYYY'
-                            }
-                        }
-                    }
-                }
-            }).datepicker();
-            $('#n_fecha').on('dp.change dp.show', function(e) {
-                $('#form_registro').bootstrapValidator('revalidateField', 'n_fecha');
-            });
-            $('#form_registro').bootstrapValidator('resetForm', true);
-        }).on('hide.bs.modal', function(e) {
-            $('#form_registro').hide().appendTo('body');
-        })
-        .on('success.form.bv', function(e) {
-            e.preventDefault();
-            var $form = $(e.target),
-            bv = $form.data('bootstrapValidator');
-            $.post(nivel_entrada+'app/src/libs_plan/gn_plan.php?nuevo_registro', {
-                fn_nombre: 'crear_registro',
-                id_plan: __CNB__.plan_actual._id,
-                args: JSON.stringify(datos_formulario($form))
-            },
-            function(result) {
-                console.log(result);
-                abrir_registro(result[0], 'tbody_plan');
-                habilitar_reg();
-                $form.parents('.bootbox').modal('hide');
-            }, 'json');
-        })
-        .modal('show');
-    });
-
-var arr_grado= new Array();
-<?php
-foreach ($cl_grado->listar_grado() as $key => $grado) {
-    echo 'arr_grado['.$grado['_id'].'] = {_id: '.$grado['_id'].', descripcion: '.$grado['grado'].', id_carrera: '.$grado['id_carrera'].'};
-    ';
-}
-?>
-
-$('#carrera').on('change', function () {
-    populateSelect('grado', getObjects(arr_grado, 'id_carrera', $(this).val()));
-}).trigger('change');
-
-});
-</script>
+<?php $libs->imprimir('js', 'app/js/plan/index.js'); ?>
 </html>

@@ -1,4 +1,5 @@
 <?php
+header( 'Location: plan');
 $nivel_dir = 1;
 require_once("src/core/incluir.php");
 $libs = new Incluir($nivel_dir);

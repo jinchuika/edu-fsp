@@ -98,7 +98,7 @@ class PlnRegistro
     {
         $respuesta = array();
         $respuesta['msj'] = 'no';
-        $query = "insert into pln_registro (id_plan, id_contenido, fecha, actividad, recurso) values ('".$args['id_plan']."', '".$args['n_contenido']."', '".$args['n_fecha']."', '".$args['n_actividad']."', '".$args['n_recursos']."')";
+        $query = "insert into pln_registro (id_plan, id_contenido, fecha, actividad, recurso) values ('".$args['id_plan']."', '".$args['n_contenido']."', '".implode("-",array_reverse(explode("/",$args['n_fecha'])))."', '".$args['n_actividad']."', '".$args['n_recursos']."')";
         if($this->bd->ejecutar($query, true)){
             $id_registro = $this->bd->lastID();
             if(is_array($args['n_funsepa'])){
@@ -107,7 +107,7 @@ class PlnRegistro
                     $this->bd->ejecutar($query_funsepa);
                 }
             }
-            else{
+            elseif (!empty($args['n_funsepa'])) {
                 $query_funsepa = "insert into pln_contenido_funsepa (id_registro, id_funsepa) values (".$id_registro.", ".$args['n_funsepa'].")";
                 $this->bd->ejecutar($query_funsepa);
             }
@@ -118,7 +118,7 @@ class PlnRegistro
                     $this->bd->ejecutar($query_metodo);
                 }
             }
-            else{
+            elseif (!empty($args['n_metodo'])){
                 $query_metodo = "insert into pln_metodo (id_registro, id_metodo) values (".$id_registro.", ".$args['n_metodo'].")";
                 $this->bd->ejecutar($query_metodo, true);
             }
