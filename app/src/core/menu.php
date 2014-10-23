@@ -28,17 +28,24 @@ class Menu {
         }
         $menu_cnb = $this->add('CNB', array('url' => '#'));
         $smenu_plan = $menu_cnb->add('Planificador', array('url'=>'app/plan'));
+<<<<<<< HEAD
         $menu_cnb->add('CNB 4to Bachillerato', array('url'=>'http://bit.ly/cnb4baco', 'externo'=>true));
         $menu_cnb->add('CNB 5to Bachillerato', array('url'=>'http://bit.ly/cnb5baco', 'externo'=>true));
         $menu_cnb->add('CNB Magisterio', array('url'=>'http://bit.ly/cnb4mebi', 'externo'=>true));
         $menu_cnb->add('Herramientas de evaluación', array('url'=>'http://bit.ly/cnbeval', 'externo'=>true));
 
+=======
+        
+>>>>>>> 0c8487b4c5cec65469b6b82f34ebd272cd11291d
         $menu_seminario = $this->add('Seminario', '#');
         $menu_seminario->add('Agenda', 'app/seminario/agenda.php');
         $menu_seminario->add('Importancia', array('url'=>'app/seminario/importancia.php'));
         $menu_seminario->add('Lìnea de tiempo', 'app/seminario/timeline.php');
+<<<<<<< HEAD
         $menu_seminario->add('Presentación CNB', array('url'=>'media/cnb/importancia_cnb.pptx'));
         $menu_seminario->add('Presentación evaluación', array('url'=>'http://www.powtoon.com/show/cnV3PTUOcsh/cnb-evaluacion/', 'externo'=>true));
+=======
+>>>>>>> 0c8487b4c5cec65469b6b82f34ebd272cd11291d
 
         if($sesion instanceof Sesion){
             $menu_perfil = $this->add('Perfil', array('url'=>'#', 'class'=>'navbar-right'));
