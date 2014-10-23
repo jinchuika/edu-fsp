@@ -178,7 +178,7 @@ if(!empty($id_publica)){
     $gn_plan = new GnPlan($bd);
     $gn_clase = new GnClase($bd);
 
-    $plan_actual = $gn_plan->buscar_plan(array('gn_plan._id'=>$id_publica, 'public'=>1), 'gn_plan._id, id_clase');
+    $plan_actual = $gn_plan->buscar_plan(array('gn_plan._id'=>$id_publica, 'public'=>1), 'gn_plan._id, id_clase, id_user');
     if($plan_actual){
         $clase_actual = $gn_clase->abrir_clase(array('_id'=>$plan_actual['id_clase']));
 
@@ -188,7 +188,7 @@ if(!empty($id_publica)){
         ";
         echo "$('#grado').val(".$clase_actual['id_grado'].");
         ";
-        echo "abrir_plan(".$plan_actual['_id'].", true);";
+        echo "abrir_plan(".$plan_actual['_id'].", ".($sesion->get('id_user')==$plan_actual['id_user'] ? 'false' : 'true').");";
         echo "console.log(".$clase_actual['id_anno'].");";
         echo 'console.log('.$plan_actual['id_clase'].');';
     }
