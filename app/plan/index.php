@@ -3,13 +3,13 @@ $nivel_dir = 2;
 require_once("../src/core/incluir.php");
 $libs = new Incluir($nivel_dir);
 
-$menu = $libs->incluir('menu', array('nivel_dir'=>$nivel_dir));
-$menu_exportar = $menu->add('Exportar plan', array('url'=>'#', 'class' => 'export'));
-$menu_exportar->add('Excel', array('url'=>'#', 'id'=>'btn_export', 'class' => 'export'));
-
 $sesion = $libs->incluir('sesion');
 $sesion->validar_acceso();
 $bd = $libs->incluir('db');
+
+$menu = $libs->incluir('menu', array('nivel_dir'=>$nivel_dir, 'sesion'=>$sesion));
+$menu_exportar = $menu->add('Exportar plan', array('url'=>'#', 'class' => 'export'));
+$menu_exportar->add('Excel', array('url'=>'#', 'id'=>'btn_export', 'class' => 'export'));
 
 $libs->incluir_clase('app/src/model/ClAnno.class.php');
 $libs->incluir_clase('app/src/model/ClCarrera.class.php');

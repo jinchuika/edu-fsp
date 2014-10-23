@@ -19,16 +19,25 @@ class Menu {
     /**
      * Crea el objeto del menú y con la plantilla general
      * @param integer $nivel_dir Para crear la url
+     * @param Sesion $sesion
      */
-    public function __construct($nivel_dir=0)
+    public function __construct($nivel_dir=0, $sesion=null)
     {
         for ($temp_dir=0; $temp_dir < $nivel_dir; $temp_dir++) { 
             $this->nivel_dir .= '../';
         }
         $menu_cnb = $this->add('CNB', array('url' => '#'));
-        $smenu_plan = $menu_cnb->add('Planificador', array('url'=>'app/plan.php'));
-        $menu_perfil = $this->add('Perfil', array('url'=>'#', 'class'=>'navbar-right'));
-        $menu_perfil->add('Cerrar sesión', 'includes/libs/logout.php');
+        $smenu_plan = $menu_cnb->add('Planificador', array('url'=>'app/plan'));
+        
+        $menu_seminario = $this->add('Seminario', '#');
+        $menu_seminario->add('Agenda', 'app/seminario/agenda.php');
+        $menu_seminario->add('Importancia', array('url'=>'app/seminario/importancia.php'));
+        $menu_seminario->add('Lìnea de tiempo', 'app/seminario/timeline.php');
+
+        if($sesion){
+            $menu_perfil = $this->add('Perfil', array('url'=>'#', 'class'=>'navbar-right'));
+            $menu_perfil->add('Cerrar sesión', 'includes/libs/logout.php');
+        }
     }
     
     /**
@@ -122,7 +131,7 @@ class Menu {
         foreach ($this->whereParent($parent_id) as $item)
         {
             $items .= "\n<{$element} {$this->parseAttr($item->attributes())}>";
-            $items .= "<a ".($item->hasChildren() ? 'class="dropdown-toggle" data-toggle="dropdown"' : '')." href=\"{$this->nivel_dir}{$item->link->url}\"{$this->parseAttr($item->link->attributes)}>{$item->link->text}</a>";
+            $items .= "<a ".($item->hasChildren() ? 'class="dropdown-toggle" data-toggle="dropdown"' : '')." href=\"{$item->link->url}\"{$this->parseAttr($item->link->attributes)}>{$item->link->text}</a>";
 
             if( $item->hasChildren() ) {
                 $items .= "<{$type} class='dropdown-menu' data-role='menu'>";
@@ -147,7 +156,13 @@ class Menu {
         }
 
         elseif ( isset($options['url']) ) {
-            return $options['url'];
+            if(!isset($options['externo'])){
+
+                return $this->nivel_dir.$options['url'];
+            }
+            else{
+                return $options['url'];
+            }
         } 
 
         return null;

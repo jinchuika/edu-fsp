@@ -6,7 +6,7 @@ $sesion = $libs->incluir('sesion');
 if($sesion->get('id_user')){
     header( 'Location: app');
 }
-//$sesion->validar_acceso('', 'app');
+$menu = $libs->incluir('menu');
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -18,6 +18,7 @@ if($sesion->get('id_user')){
     <title>Educación</title>
 </head>
 <body>
+    <?php echo $menu->imprimir(); ?>
     <div class="container">
         <div class="row">
             <div class="col-sm-4"></div>
