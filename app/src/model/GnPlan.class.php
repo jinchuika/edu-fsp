@@ -52,5 +52,22 @@ class GnPlan
             return $plan;
         }
     }
+
+    /**
+     * Permite publicar ua planificación
+     * @param  integer $id_plan
+     * @param  integer $tipo
+     * @return Array
+     */
+    public function publicar_plan($id_plan, $tipo=1)
+    {
+        $respuesta = array('msj'=>'no');
+        $query = "UPDATE gn_plan set public=".$tipo." where _id=".$id_plan;
+        if($this->bd->ejecutar($query)){
+            $respuesta['msj'] = 'si';
+            $respuesta['_id'] = $id_plan;
+        }
+        return $respuesta;
+    }
 }
 ?>
