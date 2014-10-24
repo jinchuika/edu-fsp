@@ -32,6 +32,7 @@ class Menu {
         $menu_cnb->add('CNB 5to Bachillerato', array('url'=>'http://bit.ly/cnb5baco', 'externo'=>true));
         $menu_cnb->add('CNB Magisterio', array('url'=>'http://bit.ly/cnb4mebi', 'externo'=>true));
         $menu_cnb->add('Herramientas de evaluación', array('url'=>'http://bit.ly/cnbeval', 'externo'=>true));
+        $menu_cnb->add('Guía de contenido FUNSEPA', array('url'=>'media/cnb/guia_contenido_fsp.docx'));
 
         $menu_seminario = $this->add('Seminario', '#');
         $menu_seminario->add('Agenda', 'app/seminario/agenda.php');
