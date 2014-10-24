@@ -115,7 +115,7 @@ var BarraCargaInf = function (id_html, objetivo){
   this.id_html = (id_html ? id_html : 'barra_carga_inf');
   this.activo = true;
   this.contenido_div =
-  '<div id="'+this.id_html+'" class="progress progress-striped active">'+
+  '<div id="'+this.id_html+'" class="progress progress-striped active navbar-fixed-bottom" data-offset-top="150">'+
   '<div class="progress-bar progress-bar-info" style="width: 100%">Cargando</div>'+
   '</div>';
   if(!objetivo){

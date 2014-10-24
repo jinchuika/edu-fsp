@@ -88,6 +88,9 @@ class Incluir
             case 'cnb_js':
                 $this->imprimir('js', 'app/js/cnb/Cnb.js');
                 break;
+            case 'stupidtable':
+                $this->imprimir('js', 'fw/js/stupidtable.min.js');
+                break;
             default:
                 # code...
                 break;

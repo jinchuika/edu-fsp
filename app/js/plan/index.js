@@ -38,6 +38,7 @@ function abrir_plan (id_plan, publico) {
             }
             $('#tabla_plan').show();
             __CNB__.plan_actual = plan_actual;
+            $("#tabla_plan").stupidtable();
             modal_c.ocultar();
         }
     });

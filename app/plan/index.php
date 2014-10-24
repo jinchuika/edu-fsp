@@ -30,17 +30,10 @@ $cl_grado = new ClGrado($bd);
     $libs->incluir('html_template');
     $libs->incluir('html_plan');
     $libs->incluir('cnb_js');
+    $libs->incluir('stupidtable');
     ?>
 </head>
-<style type="text/css">
-.progress-bar-primary {
-  background-color: yellow;
-}
 
-.progress-striped .progress-bar-primary {
-  background-image: linear-gradient(45deg, rgba(255, 255, 255, .75)   25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .75) 50%, rgba(255, 255, 255, .75) 75%, transparent 75%, transparent);
-}
-</style>
 <body>
     <?php echo $menu->imprimir(); ?>
     <div class="container">
@@ -103,10 +96,10 @@ $cl_grado = new ClGrado($bd);
                 <table id="tabla_plan" class="table table-hover table-condensed table-bordered well">
                     <thead>
                         <tr>
-                            <th>Fecha <span class="label label-warning lbl_public" style="display: none;">Público</span></th>
-                            <th>Contenido MINEDUC <span class="label label-warning lbl_public" style="display: none;">Público</span></th>
-                            <th>Contenido FUNSEPA <span class="label label-warning lbl_public" style="display: none;">Público</span></th>
-                            <th>Actividad <span class="label label-warning lbl_public" style="display: none;">Público</span></th>
+                            <th data-sort='string' class='head'>Fecha <span class="label label-warning lbl_public" style="display: none;">Público</span></th>
+                            <th data-sort='string' class='head'>Contenido MINEDUC <span class="label label-warning lbl_public" style="display: none;">Público</span></th>
+                            <th data-sort='string' class='head'>Contenido FUNSEPA <span class="label label-warning lbl_public" style="display: none;">Público</span></th>
+                            <th data-sort='string' class='head'>Actividad <span class="label label-warning lbl_public" style="display: none;">Público</span></th>
                             <th>Recurso <span class="label label-warning lbl_public" style="display: none;">Público</span></th>
                             <th>Método <span class="label label-warning lbl_public" style="display: none;">Público</span></th>
                         </tr>
