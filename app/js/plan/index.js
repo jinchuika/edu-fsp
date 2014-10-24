@@ -319,6 +319,7 @@ $(document).ready(function () {
             $('#n_fecha').on('dp.change dp.show', function(e) {
                 $('#form_registro').bootstrapValidator('revalidateField', 'n_fecha');
             });
+            $('#form_regustro input[type=text], textarea').val('');
             $('#form_registro').bootstrapValidator('resetForm', true);
         }).on('hide.bs.modal', function(e) {
             $('#form_registro').hide().appendTo('body');
