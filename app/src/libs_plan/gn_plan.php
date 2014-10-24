@@ -73,7 +73,11 @@ function nuevo_plan($anno, $grado, $carrera, $id_user)
 function abrir_plan($id_plan)
 {
     $gn_plan = new GnPlan();
+    $clase = new GnClase();
+
     $plan_actual = $gn_plan->buscar_plan(array('gn_plan._id'=> $id_plan), "gn_plan._id as _id, id_user, id_clase, public, gn_clase.id_grado ");
+    $clase_actual = $clase->abrir_clase(array('_id' => $plan_actual['id_clase']), 'id_anno');
+    $plan_actual['id_anno'] = $clase_actual['id_anno'];
     $plan_actual['arr_registro'] = abrir_registro($plan_actual['_id']);
     return $plan_actual;
 }

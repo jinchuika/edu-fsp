@@ -1,5 +1,6 @@
 var __CNB__ = new Cnb();
 var modal_c = modal_carga_gn();
+var barra_carga = new BarraCargaInf();
 var modal_form = [];
 modal_c.crear();
 
@@ -96,7 +97,6 @@ function bloquear_contenido (id_contenido) {
  * @return {Object} el contenido habilitado
  */
 function habilitar_contenido (id_contenido) {
-    console.log(id_contenido);
     var contenido_temp = getObjects(__CNB__.en_uso, '_id', id_contenido)[0];
     __CNB__.arr_contenido[contenido_temp._id] = contenido_temp;
     delete __CNB__.en_uso[contenido_temp._id];
@@ -135,7 +135,7 @@ function habilitar_reg () {
 }
 
 function editar_registro (id_registro) {
-    console.log('Editato: '+id_registro);
+//    console.log('Editato: '+id_registro);
 }
 
 /**
@@ -145,6 +145,7 @@ function editar_registro (id_registro) {
  */
  function borrar_registro (id_registro) {
     bootbox.confirm('¿Está seguro de que desea borrar ese registro?', function (respuesta) {
+        barra_carga.mostrar();
         if(respuesta===true){
             $.post(nivel_entrada+'app/src/libs_plan/gn_plan.php?fn_nombre=borrar_registro', {
                 id_registro: id_registro
@@ -157,6 +158,7 @@ function editar_registro (id_registro) {
                         text: 'El registro se eliminó'
                     });
                 }
+                barra_carga.ocultar();
             },
             'json');
         }
@@ -285,6 +287,14 @@ $(document).ready(function () {
                             },
                             date: {
                                 format: 'DD/MM/YYYY'
+                            },
+                            callback: {
+                                message: 'El año no coincide',
+                                callback: function (value, validator, $field) {
+                                    var anno_actual = $("#anno option[value='"+__CNB__.plan_actual.id_anno+"']").text(),
+                                    fecha_nueva = value.split('/');
+                                    return anno_actual == fecha_nueva[2];
+                                }
                             }
                         }
                     }
@@ -314,4 +324,10 @@ $(document).ready(function () {
         })
         .modal('show');
     });
+})
+.ajaxSend(function () {
+    barra_carga.mostrar();
+})
+.ajaxComplete(function () {
+    barra_carga.ocultar();
 });

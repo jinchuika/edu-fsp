@@ -25,12 +25,22 @@ $cl_grado = new ClGrado($bd);
 <head>
     <meta charset="UTF-8">
     <title>Educación FUNSEPA</title>
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
     <?php
     $libs->incluir('html_template');
     $libs->incluir('html_plan');
     $libs->incluir('cnb_js');
     ?>
 </head>
+<style type="text/css">
+.progress-bar-primary {
+  background-color: yellow;
+}
+
+.progress-striped .progress-bar-primary {
+  background-image: linear-gradient(45deg, rgba(255, 255, 255, .75)   25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .75) 50%, rgba(255, 255, 255, .75) 75%, transparent 75%, transparent);
+}
+</style>
 <body>
     <?php echo $menu->imprimir(); ?>
     <div class="container">

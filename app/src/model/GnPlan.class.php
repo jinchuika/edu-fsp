@@ -48,7 +48,6 @@ class GnPlan
         
         $stmt = $this->bd->ejecutar($query);
         if($plan = $this->bd->obtener_fila($stmt)){
-            $plan['query'] = $query;
             return $plan;
         }
     }

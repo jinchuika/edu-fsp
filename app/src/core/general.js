@@ -102,3 +102,41 @@ function formato_fecha(fecha_str)
     nueva_fecha = fecha_str.split("-");
     return nueva_fecha[2]+ "/" +nueva_fecha[1]+ "/" +nueva_fecha[0];
 }
+
+$.fn.goTo = function() {
+    $('html, body').animate({
+        scrollTop: $(this).offset().top + 'px'
+    }, 'fast');
+    return this; // for chaining...
+}
+
+/* Clase para mostrar barra de carga en la parte inferior de la pantalla */
+var BarraCargaInf = function (id_html, objetivo){
+  this.id_html = (id_html ? id_html : 'barra_carga_inf');
+  this.activo = true;
+  this.contenido_div =
+  '<div id="'+this.id_html+'" class="progress progress-striped active">'+
+  '<div class="progress-bar progress-bar-info" style="width: 100%">Cargando</div>'+
+  '</div>';
+  if(!objetivo){
+    $(document.body).append(this.contenido_div);
+  }
+  else{
+    $('#'+objetivo).append(this.contenido_div);
+  }
+  this.ocultar();
+};
+
+BarraCargaInf.prototype.mostrar = function() {
+    if(this.activo==false){
+        $("#"+this.id_html+"").toggle('show');
+        this.activo = true;
+    }
+};
+
+BarraCargaInf.prototype.ocultar = function() {
+    if(this.activo==true){
+        $("#"+this.id_html+"").toggle('hide');
+        this.activo = false;
+    }
+};
