@@ -7,6 +7,8 @@ $sesion = $libs->incluir('sesion');
 $libs->incluir_clase('app/src/model/GnPlan.class.php');
 $libs->incluir_clase('app/src/model/PlnRegistro.class.php');
 $libs->incluir_clase('app/src/model/GnClase.class.php');
+$libs->incluir_clase('app/src/model/GnEscuela.class.php');
+$libs->incluir_clase('app/src/model/User.class.php');
 
 $libs->incluir_clase('includes/auth/Db.class.php');
 $libs->incluir_clase('includes/auth/Conf.class.php');
@@ -32,6 +34,10 @@ if($fn_nombre=='borrar_registro'){
 
 if($fn_nombre=='publicar_plan'){
     echo json_encode(publicar_plan($_POST['id_plan'], $_POST['tipo']));
+}
+
+if($fn_nombre=='abrir_info_plan'){
+    echo json_encode(abrir_info_plan($_POST['id_plan']));
 }
 
 /**
@@ -74,9 +80,11 @@ function abrir_plan($id_plan)
 {
     $gn_plan = new GnPlan();
     $clase = new GnClase();
+    $usuario = new User();
 
     $plan_actual = $gn_plan->buscar_plan(array('gn_plan._id'=> $id_plan), "gn_plan._id as _id, id_user, id_clase, public, gn_clase.id_grado ");
     $clase_actual = $clase->abrir_clase(array('_id' => $plan_actual['id_clase']), 'id_anno');
+
     $plan_actual['id_anno'] = $clase_actual['id_anno'];
     $plan_actual['arr_registro'] = abrir_registro($plan_actual['_id']);
     return $plan_actual;
@@ -122,5 +130,21 @@ function publicar_plan($id_plan, $tipo=1)
 {
     $gn_plan = new GnPlan();
     return $gn_plan->publicar_plan($id_plan, $tipo);
+}
+
+function abrir_info_plan($id_plan)
+{
+    $gn_plan = new GnPlan();
+    $clase = new GnClase();
+    $usuario = new User();
+    $escuela = new GnEscuela();
+
+    $plan_actual = $gn_plan->buscar_plan(array('gn_plan._id'=> $id_plan), "gn_plan._id as _id, id_user, id_clase ");
+    $plan_actual['clase'] = $clase->abrir_clase(array('gn_clase._id'=>$plan_actual['id_clase']), ' grado, carrera, anno', 'inner join cl_anno on cl_anno._id=gn_clase.id_anno
+        inner join cl_grado on cl_grado._id=gn_clase.id_grado
+        inner join cl_carrera on cl_carrera._id=gn_clase.id_carrera');
+    $plan_actual['usuario'] = $usuario->abrir_usuario(array('user._id'=>$plan_actual['id_user']), 'nombre, apellido, id_escuela');
+    $plan_actual['escuela'] = $escuela->abrir_escuela(array('gn_escuela._id'=>$plan_actual['usuario']['id_escuela']));
+    return $plan_actual;
 }
 ?>

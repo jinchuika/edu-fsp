@@ -39,9 +39,24 @@ function abrir_plan (id_plan, publico) {
             $('#tabla_plan').show();
             __CNB__.plan_actual = plan_actual;
             $("#tabla_plan").stupidtable();
+            abrir_info_plan(id_plan);
             modal_c.ocultar();
         }
     });
+}
+
+function abrir_info_plan (id_plan) {
+    $('#info_plan').hide();
+    $.post(nivel_entrada+'app/src/libs_plan/gn_plan.php?fn_nombre=abrir_info_plan', {
+        id_plan: id_plan
+    }, function (respuesta) {
+        if(respuesta){
+            $('#desc_plan').html(respuesta.clase.grado+' '+respuesta.clase.carrera+', '+respuesta.clase.anno);
+            $('#nombre_plan').html('Creado por '+respuesta.usuario.nombre+' '+respuesta.usuario.apellido+' de '+respuesta.escuela.nombre+', '+respuesta.escuela.udi);
+            $('#info_plan').show();
+        }
+    },
+    'json');
 }
 
 /**
@@ -59,13 +74,13 @@ function abrir_registro (registro, objetivo) {
     var s_funsepa = '<td>';
     for (var i = 0; i < registro.arr_funsepa.length; i++) {
         var temp_funsepa = getObjects(__CNB__.arr_funsepa, '_id', registro.arr_funsepa[i].id_funsepa)[0];
-        s_funsepa += '<a href="'+temp_funsepa.link+'">'+temp_funsepa.descripcion+'</a>, ';
+        s_funsepa += '<a target="_blank" href="'+temp_funsepa.link+'">'+temp_funsepa.descripcion+'</a>, ';
     };
     s_funsepa += '</td>';
     var s_metodo = '<td>';
     for (var i = 0; i < registro.arr_metodo.length; i++) {
         var temp_metodo = getObjects(__CNB__.arr_metodo, '_id', registro.arr_metodo[i].id_metodo)[0];
-        s_metodo += '<a href="'+temp_metodo.link+'">' +temp_metodo.descripcion+'</a>, ';
+        s_metodo += '<a target="_blank" href="'+temp_metodo.link+'">' +temp_metodo.descripcion+'</a>, ';
     };
     s_metodo += '</td>';
     var s_actividad = '<td id="actividad_'+registro._id+'">'+registro.actividad+'</td>';

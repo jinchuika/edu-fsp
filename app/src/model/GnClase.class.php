@@ -50,20 +50,21 @@ class GnClase
         }
     }
 
-    public function abrir_clase($filtros, $campos='*')
+    public function abrir_clase($filtros, $campos='*', $extra='')
     {
         if(is_array($filtros)){
-            $condicion = ' where _id>0  ';
+            $condicion = ' where gn_clase._id>0  ';
             foreach ($filtros as $key => $filtro) {
                 $condicion .= ' and '.$key.'="'.$filtro.'" ';
             }
         }
-        $query = "select ".$campos." from gn_clase ".$condicion;
+        $query = "select ".$campos." from gn_clase ".$extra." ".$condicion;
         $stmt = $this->bd->ejecutar($query);
         if($clase = $this->bd->obtener_fila($stmt, 0)){
             return $clase;
         }
         else{
+            echo $query;
             return false;
         }
 

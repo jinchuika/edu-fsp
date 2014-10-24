@@ -86,5 +86,25 @@ class User
             return array('valid' => true, 'query'=>$query);
         }
     }
+
+    public function abrir_usuario(Array $filtros, $campos = '*')
+    {
+        if(is_array($filtros)){
+            $condicion = ' where user._id>0  ';
+            foreach ($filtros as $key => $filtro) {
+                $condicion .= ' and '.$key.'="'.$filtro.'" ';
+            }
+        }
+        $query = "select ".$campos." from user 
+        inner join usr_persona on usr_persona._id=user._id
+        ".$condicion;
+        $stmt = $this->bd->ejecutar($query, true);
+        if($usuario = $this->bd->obtener_fila($stmt)){
+            return $usuario;
+        }
+        else{
+            return false;
+        }
+    }
 }
 ?>

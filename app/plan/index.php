@@ -91,6 +91,16 @@ $cl_grado = new ClGrado($bd);
                 </form>
             </div>
         </div>
+        <div class="row" id="info_plan">
+            <blockquote class="well">
+                <p id="desc_plan"></p>
+                <footer id="nombre_plan"></footer>
+            </blockquote>
+            <div class="col-sm-8" >
+            </div>
+            <div class="col-sm-4" >
+            </div>
+        </div>
         <div class="row">
             <div class="col-sm-12">
                 <table id="tabla_plan" class="table table-hover table-condensed table-bordered well">
