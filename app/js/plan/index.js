@@ -183,9 +183,9 @@ function editar_registro (id_registro) {
 
 /**
  * Llena un select
- * @param  {DOM.Element} el
- * @param  {Array} items
- * @return {[type]}       [description]
+ * @param  {DOM.Element} id_elemento
+ * @param  {Array} items    el listado para llenar el select
+ * @param {bool} usar_select2 renderiza el select
  */
  function populateSelect(id_elemento, items, usar_select2) {
     $('#'+id_elemento).empty();

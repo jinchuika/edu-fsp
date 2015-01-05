@@ -80,10 +80,10 @@ class User
         $query = "select _id from ".$tabla." where ".$filtro['campo']."='".$filtro['valor']."'";
         $stmt = $this->bd->ejecutar($query);
         if($this->bd->obtener_fila($stmt)){
-            return array('valid' => false, 'query'=>$query);
+            return array('valid' => false);
         }
         else{
-            return array('valid' => true, 'query'=>$query);
+            return array('valid' => true);
         }
     }
 

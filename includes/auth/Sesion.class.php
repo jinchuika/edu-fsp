@@ -43,7 +43,7 @@ class Sesion {
      * @param  string $nombre
      * @return string|bool
      */
-    public function get($nombre) {
+    public static function get($nombre) {
         if (isset ( $_SESSION [$nombre] )) {
             return $_SESSION [$nombre];
         } else {

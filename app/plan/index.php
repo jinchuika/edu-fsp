@@ -102,8 +102,8 @@ $cl_grado = new ClGrado($bd);
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-12">
-                <table id="tabla_plan" class="table table-hover table-condensed table-bordered well">
+            <div class="col-sm-12 tab-content" style="overflow: auto;">
+                <table id="tabla_plan" style="overflow-x: auto;" class="table table-hover table-condensed table-bordered well tab-pane">
                     <thead>
                         <tr>
                             <th data-sort='string' class='head'>Fecha <span class="label label-warning lbl_public" style="display: none;">Público</span></th>

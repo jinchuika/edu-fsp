@@ -13,7 +13,7 @@ $libs->incluir_clase('app/src/model/User.class.php');
 $libs->incluir_clase('includes/auth/Db.class.php');
 $libs->incluir_clase('includes/auth/Conf.class.php');
 
-$fn_nombre = !empty($_POST['fn_nombre']) ? $_POST['fn_nombre'] : $_GET['fn_nombre'];
+$fn_nombre = !empty($_POST['fn_nombre']) ? mysql_real_escape_string($_POST['fn_nombre']) : mysql_real_escape_string($_GET['fn_nombre']);
 !empty($_POST['args']) ? $args = json_decode($_POST['args'], true) : json_decode($_GET['args'], true);
 
 if($fn_nombre=='buscar_plan'){

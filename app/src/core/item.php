@@ -117,7 +117,6 @@ class Item_menu {
 
 	/**
 	 * Check if the item has any children
-	 *
 	 * @return boolean
 	 */
 	public function hasChildren()
