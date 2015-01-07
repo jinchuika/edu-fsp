@@ -1,16 +1,15 @@
 <?php
 class User
 {
-    function __construct($bd=null, $sesion=null)
+    function __construct($bd=null)
     {
-        if(empty($bd) || empty($sesion)){
+        if(empty($bd)){
             require_once('../core/incluir.php');
             $nivel_dir = 3;
             $libs = new Incluir($nivel_dir);
             $this->bd = $libs->incluir('db');
         }
         $this->bd = (!empty($bd)) ? $bd : $this->bd;
-        $this->sesion = (!empty($sesion)) ? $sesion : $this->sesion;
     }
     
     /**
@@ -22,7 +21,7 @@ class User
      * @param  string  $username  
      * @param  string  $password  
      * @param  Array  $args['extra']      Los parámetros opcionales
-     * @return [type]
+     * @return Array
      */
     public function crear_usuario($args)
     {

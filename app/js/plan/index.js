@@ -316,6 +316,9 @@ $(document).ready(function () {
                     }
                 }
             });
+            $(this).draggable({
+                handle: ".modal-header"
+            });
             $('#n_fecha').on('dp.change dp.show', function(e) {
                 $('#form_registro').bootstrapValidator('revalidateField', 'n_fecha');
             });

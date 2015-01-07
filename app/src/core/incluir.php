@@ -59,13 +59,15 @@ class Incluir
                 $this->imprimir('js', 'fw/theme/plugins/jquery-1.8.2/jquery-1.8.2.min.js');
                 $this->imprimir('js', 'fw/theme/plugins/bootstrap-3.2.0/js/bootstrap.min.js');
                 $this->imprimir('js', 'fw/js/bootbox.min.js');
-                $this->imprimir('js', 'fw/js/jquery.excelexport.min.js');
                 $this->imprimir('js', 'fw/theme/plugins/select2/select2.js');
                 $this->imprimir('js', 'fw/theme/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js');
                 $this->imprimir('js', 'fw/theme/plugins/gritter/js/jquery.gritter.min.js');
                 $this->imprimir('js', 'fw/theme/plugins/bs-validator/js/bootstrapValidator.min.js');
                 $this->imprimir('js', 'fw/theme/plugins/bs-validator/js/language/es_ES.js');
                 break;
+            case 'html_plan':
+                $this->imprimir('js', 'fw/js/jquery.ui.draggable.js');
+                $this->imprimir('js', 'fw/js/jquery.excelexport.min.js');
             case 'menu':
                 $this->incluir_clase('app/src/core/link.php');
                 $this->incluir_clase('app/src/core/item.php');

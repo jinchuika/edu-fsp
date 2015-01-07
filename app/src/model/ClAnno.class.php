@@ -1,7 +1,13 @@
 <?php
+/**
+ * Gestiona los años
+ */
 class ClAnno
 {
-    
+    /**
+     * Crea la instancia
+     * @param Db $bd Instancia de la base de datos
+     */
     function __construct($bd=null)
     {
         if(empty($bd)){
