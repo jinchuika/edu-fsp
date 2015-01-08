@@ -103,6 +103,15 @@ function formato_fecha(fecha_str)
     return nueva_fecha[2]+ "/" +nueva_fecha[1]+ "/" +nueva_fecha[0];
 }
 
+function encriptar_string (enc_string) {
+    var resultado = '';
+    for (var i = 0; i < enc_string.length; i++) {
+        var enc_key = Math.floor((Math.random() * 50) +1);
+        resultado += '-'+(enc_string.charCodeAt(i) * enc_key)+'.'+(enc_key-1);
+    };
+    return resultado;
+}
+
 $.fn.goTo = function() {
     $('html, body').animate({
         scrollTop: $(this).offset().top + 'px'

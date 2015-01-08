@@ -2,12 +2,15 @@
 class Login
 {
 	
-	function __construct()
+	function __construct($bd=null)
 	{
-		require_once("../../app/src/core/incluir.php");
-		$nivel_dir = 2;
-        $libs = new Incluir($nivel_dir);
-		$this->bd = $libs->incluir('db');
+		if(empty($bd)){
+            require_once('../../app/src/core/incluir.php');
+            $nivel_dir = 2;
+            $libs = new Incluir($nivel_dir);
+            $this->bd = $libs->incluir('db');
+        }
+        $this->bd = (!empty($bd)) ? $bd : $this->bd;
 	}
 
 	/**
@@ -68,7 +71,7 @@ class Login
 	 * @param  string $decrypt_string (ascii del caracter) / (random - 1)
 	 * @return string
 	 */
-	private function desencriptar($decrypt_string='')
+	public static function desencriptar($decrypt_string='')
 	{
 		$arr_convert = explode("-", $decrypt_string);
 		foreach ($arr_convert as $caracter) {

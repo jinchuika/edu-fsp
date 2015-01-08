@@ -57,14 +57,7 @@ $menu = $libs->incluir('menu');
     </div>
 </body>
 <script>
-function encriptar_string (enc_string) {
-    var resultado = '';
-    for (var i = 0; i < enc_string.length; i++) {
-        var enc_key = Math.floor((Math.random() * 50) +1);
-        resultado += '-'+(enc_string.charCodeAt(i) * enc_key)+'.'+(enc_key-1);
-    };
-    return resultado;
-}
+
 $(document).ready(function () {
     $('#form_login').submit(function (e) {
         e.preventDefault();

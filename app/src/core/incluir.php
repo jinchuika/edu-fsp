@@ -52,6 +52,7 @@ class Incluir
                 $this->imprimir('css', 'fw/theme/plugins/select2/select2.css');
                 $this->imprimir('css', 'fw/theme/plugins/bootstrap-datepicker/css/datepicker.css');
                 $this->imprimir('css', 'fw/theme/plugins/bootstrap-datepicker/css/datepicker3.css');
+                $this->imprimir('css', 'fw/theme/plugins/bootstrap3-editable/css/bootstrap-editable.css');
                 $this->imprimir('css', 'fw/theme/plugins/gritter/css/jquery.gritter.css');
                 $this->imprimir('css', 'fw/theme/plugins/bs-validator/css/bootstrapValidator.min.css');
                 $this->imprimir('css', 'fw/theme/css/theme/default.css', array('id'=>'theme'));
@@ -61,6 +62,7 @@ class Incluir
                 $this->imprimir('js', 'fw/js/bootbox.min.js');
                 $this->imprimir('js', 'fw/theme/plugins/select2/select2.js');
                 $this->imprimir('js', 'fw/theme/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js');
+                $this->imprimir('js', 'fw/theme/plugins/bootstrap3-editable/js/bootstrap-editable.js');
                 $this->imprimir('js', 'fw/theme/plugins/gritter/js/jquery.gritter.min.js');
                 $this->imprimir('js', 'fw/theme/plugins/bs-validator/js/bootstrapValidator.min.js');
                 $this->imprimir('js', 'fw/theme/plugins/bs-validator/js/language/es_ES.js');

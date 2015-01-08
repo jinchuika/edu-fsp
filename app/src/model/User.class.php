@@ -1,15 +1,17 @@
 <?php
 class User
 {
-    function __construct($bd=null)
+    function __construct($libs=null)
     {
-        if(empty($bd)){
+        if(!($libs instanceof Incluir)){
             require_once('../core/incluir.php');
             $nivel_dir = 3;
-            $libs = new Incluir($nivel_dir);
-            $this->bd = $libs->incluir('db');
+            $this->libs = new Incluir($nivel_dir);
+        }else{
+            $this->libs = $libs;
         }
-        $this->bd = (!empty($bd)) ? $bd : $this->bd;
+        $this->bd = $this->libs->incluir('db');
+        
     }
     
     /**
@@ -74,7 +76,7 @@ class User
         }
     }
 
-    function validar_nombre($filtro, $tabla='user')
+    public function validar_nombre($filtro, $tabla='user')
     {
         $query = "select _id from ".$tabla." where ".$filtro['campo']."='".$filtro['valor']."'";
         $stmt = $this->bd->ejecutar($query);
@@ -104,6 +106,43 @@ class User
         else{
             return false;
         }
+    }
+
+    /**
+     * Edita los datos del usuario
+     * @param  integer $id    El ID de la persona o del usuario (es la misma 1-1)
+     * @param  string $campo El campo a editar
+     * @param  string $valor El nuevo valor
+     * @param  string $tabla La tabla donde esta user/usr_persona
+     * @return Array        Si se creo con exito
+     */
+    public function editar_usuario($id, $campo, $valor, $tabla='user')
+    {
+        $respuesta = array('msj'=>'no');
+        $query = "UPDATE ".$tabla." SET ".$campo."='".$valor."' where _id=".$id;
+        if($this->bd->ejecutar($query)){
+            $respuesta['msj'] = 'si';
+        }
+        else{
+            $respuesta['error'] = 'El campo no se pudo modificar';
+        }
+        return $respuesta;
+    }
+
+    public function cambiar_password($id_user, $old_pass, $new_pass)
+    {
+        $respuesta = array('msj'=>'no');
+        $this->libs->incluir_clase('includes/auth/Login.class.php');
+        $old_pass = Login::desencriptar($old_pass);
+        $query_old = "select _id from user where _id=".$id_user." and password='".$old_pass."' ";
+        $stmt_old = $this->bd->ejecutar($query_old);
+        if(!empty($this->bd->obtener_fila($stmt_old))){
+            $respuesta = $this->editar_usuario($id_user, 'password', Login::desencriptar($new_pass));
+        }
+        else{
+            $respuesta['error'] = 'La contraseña actual no coincide';
+        }
+        return $respuesta;
     }
 }
 ?>

@@ -18,10 +18,10 @@ class GnEscuela
      * @param  array $filtros
      * @return array
      */
-    public function listar_escuela($filtros=null)
+    public function listar_escuela($filtros=null, $campos=' * ')
     {
         $respuesta = array();
-        $query = "select * from gn_escuela ";
+        $query = "select ".$campos." from gn_escuela ";
         $stmt = $this->bd->ejecutar($query);
         while ($escuela = $this->bd->obtener_fila($stmt, 0)) {
             array_push($respuesta, $escuela);

@@ -44,7 +44,7 @@ class Menu {
 
         if($sesion instanceof Sesion){
             $menu_perfil = $this->add('Perfil', array('url'=>'#', 'class'=>'navbar-right'));
-            $menu_perfil->add($sesion->get('nombre')." ".$sesion->get('apellido'), array('url'=>'javascript:void(0)', 'externo'=>true));
+            $menu_perfil->add($sesion->get('nombre')." ".$sesion->get('apellido'), array('url'=>'app/usr/'));
             $menu_perfil->add('Cerrar sesión', 'includes/libs/logout.php');
         }
     }
