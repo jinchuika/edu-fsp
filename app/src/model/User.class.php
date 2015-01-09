@@ -28,9 +28,11 @@ class User
     public function crear_usuario($args)
     {
         $respuesta = array();
-        $query = '
-        call crearUsuario("'.$args['nombre'].'", "'.$args['apellido'].'", '.$args['id_genero'].', '.$args['id_escuela'].',"'.$args['username'].'", "'.$args['password'].'", "'.$args['mail'].'")
-        ';
+        
+        $this->libs->incluir_clase('includes/auth/Login.class.php');
+        $pass = Login::encriptar($args['password']);
+
+        $query = 'call crearUsuario("'.$args['nombre'].'", "'.$args['apellido'].'", '.$args['id_genero'].', '.$args['id_escuela'].',"'.$args['username'].'", "'.$pass['string'].'", "'.$args['mail'].'", "'.$pass['key'].'")';
         $stmt = $this->bd->ejecutar($query, true);
         if($user = $this->bd->ejecutar_procedimiento($stmt)){
             $respuesta['msj']= 'si';
@@ -42,37 +44,7 @@ class User
                 $query_update .= 'WHERE _id='.$user['_id'];
                 $stmt = $this->bd->ejecutar($query_update, true);
             }
-            
-            $codigo_activacion = $this->random_string()."-".$user['_id'];
-            $query_activar = "insert into usr_activo (id_user, cadena) values (".$user['_id'].", '".$codigo_activacion."')";
-            if($this->bd->ejecutar($query_activar, debug)){
-                $respuesta['codigo'] = $codigo_activacion;
-                //$respuesta['correo'] = ($this->enviar_correo($args['mail'], $codigo_activacion) == true) ? 'si' : 'no';
-            }
             return $respuesta;
-        }
-    }
-    
-    public function random_string($len = 12){
-        $str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
-        $random_string = "";
-        for($i=0;$i<$len;$i++) {
-            $random_string .= substr($str,rand(0,62),1);
-        }
-        return $random_string;
-    }
-    
-    public function enviar_correo($mail, $random_string)
-    {
-        $header = "From: webmaster@funsepa.net \r\n";
-        $header .= "Content-type: text/html\r\n";
-        $mensaje = "<h1>Bienvenido</h1>";
-        $mensaje .= "Recibió este mensaje porque se isncribió en el programa de escuelas Normales de FUNSEPA.  \r\n";
-        $mensaje .= "Para activar su cuenta de usuario deberá hacer click en el siguiente enlace o copiarlo en la barra de direcciones de su navegador.<br> \r\n";
-        $mensaje .= " http://funsepa.net/edu-dev/includes/usr_activo.php?codigo=".$random_string."\n";
-
-        if(mail($mail, "Activación de usuario", $mensaje, $header)){
-            return true;
         }
     }
 
@@ -136,7 +108,8 @@ class User
         $old_pass = Login::desencriptar($old_pass);
         $query_old = "select _id from user where _id=".$id_user." and password='".$old_pass."' ";
         $stmt_old = $this->bd->ejecutar($query_old);
-        if(!empty($this->bd->obtener_fila($stmt_old))){
+        $usuario = $this->bd->obtener_fila($stmt_old);
+        if(!empty($usuario)){
             $respuesta = $this->editar_usuario($id_user, 'password', Login::desencriptar($new_pass));
         }
         else{
