@@ -149,5 +149,10 @@ Class Db{
         }
         return $respuesta;
     }
+
+    public function escapar_string($string='')
+    {
+        return mysqli_real_escape_string($this->link, $string);
+    }
 } 
 ?>

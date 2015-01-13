@@ -1,22 +1,23 @@
 <?php
 class PlnRegistro
 {
-    function __construct($bd=null, $sesion=null)
+    function __construct($libs=null)
     {
-        if(empty($bd)){
+        if(empty($libs)){
             require_once('../core/incluir.php');
             $nivel_dir = 3;
-            $libs = new Incluir($nivel_dir);
-            $this->bd = $libs->incluir('db');
-            $this->sesion = $libs->incluir('sesion');
+            $this->libs = new Incluir($nivel_dir);
         }
-        $this->bd = (!empty($bd)) ? $bd : $this->bd;
-        $this->sesion = (!empty($sesion)) ? $sesion : $this->sesion;
+        else{
+            $this->libs = $libs;
+        }
+        $this->bd = $this->libs->incluir('db');
     }
     
     /**
-     * Abre un registro desde la base de datos
+     * Abre varios registros desde la base de datos en base al filtro
      * @param  Array $arr_filtro
+     * @param boolean $dependientes Si abre también el contenido de funsepa y los metodos
      * @return Array
      */
     public function abrir_registro($arr_filtro, $dependientes=false)
@@ -24,7 +25,7 @@ class PlnRegistro
         $respuesta = array();
         $query = "select * from pln_registro ";
         if(is_array($arr_filtro)){
-            $query .= " where _id>0 ";
+            $query .= " where 1=1 ";
             foreach ($arr_filtro as $key => $filtro) {
                 $query .= " and ".$key."=".$filtro;
             }
@@ -35,8 +36,6 @@ class PlnRegistro
             $registro['arr_metodo'] = ($dependientes ? $this->abrir_metodo(array('id_registro'=> $registro['_id']), 'id_metodo') : null );
             array_push($respuesta, $registro);
         }
-        
-        //(count($respuesta)==1) ? $respuesta = $respuesta[0] : '';
         return $respuesta;
     }
     
@@ -88,7 +87,37 @@ class PlnRegistro
         //(count($respuesta)==1) ? $respuesta = $respuesta[0] : '';
         return $respuesta;
     }
-    
+
+    /**
+     * Actualiza los métodos para ese registro
+     * @param  integer $id_registro El id del registro a cambiar
+     * @param  integer|array $arr_metodo  Los nuevos ID
+     * @return Array              La lista de ID que se añadieron
+     */
+    public function actualizar_metodo($id_registro, $arr_metodo)
+    {
+        $this->libs->incluir_clase('app/src/model/PlnMetodo.class.php');
+        $pln_metodo = new PlnMetodo($this->libs);
+        $pln_metodo->eliminar_pln_metodo('id_registro', $id_registro);
+        $crear = $pln_metodo->crear_pln_metodo($id_registro, $arr_metodo);
+        return $crear['arr_id'];
+    }
+
+    /**
+     * Actualiza el contenido de funsepa para ese registro
+     * @param  integer $id_registro El id del registro a cambiar
+     * @param  integer|array $arr_metodo  Los nuevos id
+     * @return Array|void              Listado de los nuevos ID | void si no habían nuevos
+     */
+    public function actualizar_funsepa($id_registro, $arr_funsepa)
+    {
+        $this->libs->incluir_clase('app/src/model/PlnContenidoFunsepa.class.php');
+        $pln_funsepa = new PlnContenidoFunsepa($this->libs);
+        $pln_funsepa->eliminar_pln_funsepa('id_registro', $id_registro);
+        $crear = $pln_funsepa->crear_pln_funsepa($id_registro, $arr_funsepa);
+        return $crear['arr_id'];
+    }
+
     /**
      * Crea un nuevo registro
      * @param  Array  $args
@@ -98,40 +127,32 @@ class PlnRegistro
     {
         $respuesta = array();
         $respuesta['msj'] = 'no';
-        $query = "insert into pln_registro (id_plan, id_contenido, fecha, actividad, recurso) values ('".$args['id_plan']."', '".$args['n_contenido']."', '".implode("-",array_reverse(explode("/",$args['n_fecha'])))."', '".$args['n_actividad']."', '".$args['n_recursos']."')";
+        $this->libs->incluir_clase('app/src/model/PlnContenidoFunsepa.class.php');
+        $this->libs->incluir_clase('app/src/model/PlnMetodo.class.php');
+        
+        $pln_contenido_funsepa = new PlnContenidoFunsepa($this->libs);
+        $pln_metodo = new PlnMetodo($this->libs);
+
+        $actividad = $this->bd->escapar_string($args['n_actividad']);
+        $recursos = $this->bd->escapar_string($args['n_recursos']);
+        $query = "insert into pln_registro (id_plan, id_contenido, fecha, actividad, recurso) values ('".$args['id_plan']."', '".$args['n_contenido']."', '".implode("-",array_reverse(explode("/",$args['n_fecha'])))."', '".$actividad."', '".$recursos."')";
         if($this->bd->ejecutar($query, true)){
             $id_registro = $this->bd->lastID();
-            if(is_array($args['n_funsepa'])){
-                foreach ($args['n_funsepa'] as $reg_funsepa) {
-                    $query_funsepa = "insert into pln_contenido_funsepa (id_registro, id_funsepa) values (".$id_registro.", ".$reg_funsepa.")";
-                    $this->bd->ejecutar($query_funsepa);
-                }
-            }
-            elseif (!empty($args['n_funsepa'])) {
-                $query_funsepa = "insert into pln_contenido_funsepa (id_registro, id_funsepa) values (".$id_registro.", ".$args['n_funsepa'].")";
-                $this->bd->ejecutar($query_funsepa);
-            }
-            
-            if(is_array($args['n_metodo'])){
-                foreach ($args['n_metodo'] as $reg_metodo) {
-                    $query_metodo = "insert into pln_metodo (id_registro, id_metodo) values (".$id_registro.", ".$reg_metodo.")";
-                    $this->bd->ejecutar($query_metodo);
-                }
-            }
-            elseif (!empty($args['n_metodo'])){
-                $query_metodo = "insert into pln_metodo (id_registro, id_metodo) values (".$id_registro.", ".$args['n_metodo'].")";
-                $this->bd->ejecutar($query_metodo, true);
-            }
-            
+
+            !empty($args['n_funsepa']) ? $pln_contenido_funsepa->crear_contenido_funsepa($id_registro, $args['n_funsepa']) : '';
+            !empty($args['n_metodo'])  ? $pln_metodo->crear_pln_metodo($id_registro, $args['n_metodo']) : '';
+
             $respuesta['msj'] = 'si';
             $respuesta['_id'] = $id_registro;
-        }
-        else{
-            $respuesta['query'] = $query;
         }
         return $respuesta;
     }
 
+    /**
+     * Elimina un registro basado en su ID
+     * @param  integer $id_registro el id del registro
+     * @return Array              {msj: si se pudo}
+     */
     public function borrar_registro($id_registro)
     {
         $respuesta = array('msj' => 'no');
@@ -140,6 +161,15 @@ class PlnRegistro
             $respuesta['msj'] = 'si';
         }
         return $respuesta;
+    }
+
+    public function editar_registro($id_registro, $campo, $value='')
+    {
+        $value = $this->bd->escapar_string($value);
+        $query = "update pln_registro set ".$campo."='".$value."' where _id=".$id_registro;
+        if($this->bd->ejecutar($query, true)){
+            return true;
+        }
     }
 }
 ?>

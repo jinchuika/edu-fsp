@@ -11,3 +11,9 @@ includes/auth/config.php
 .LSOverride
 
 fw/theme/
+
+# KDE directory preferences
+.directory
+
+# Directories created on removable media
+.[Tt]rash*

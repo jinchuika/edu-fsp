@@ -25,7 +25,7 @@ if($fn_nombre=='abrir_plan'){
 }
 
 if($fn_nombre=='crear_registro'){
-    echo json_encode(crear_registro($_POST['id_plan'], $args, Db::getInstance()));
+    echo json_encode(crear_registro($_POST['id_plan'], $args));
 }
 
 if($fn_nombre=='borrar_registro'){
@@ -38,6 +38,18 @@ if($fn_nombre=='publicar_plan'){
 
 if($fn_nombre=='abrir_info_plan'){
     echo json_encode(abrir_info_plan($_POST['id_plan']));
+}
+
+if($fn_nombre=='actualizar_metodo'){
+    echo json_encode(actualizar_metodo($_POST['id_registro'], $args));
+}
+
+if($fn_nombre=='actualizar_funsepa'){
+    echo json_encode(actualizar_funsepa($_POST['id_registro'], $args));
+}
+
+if($fn_nombre=='editar_registro'){
+    echo json_encode(editar_registro($_POST['pk'], $_POST['name'], $_POST['value']));
 }
 
 /**
@@ -146,5 +158,33 @@ function abrir_info_plan($id_plan)
     $plan_actual['usuario'] = $usuario->abrir_usuario(array('user._id'=>$plan_actual['id_user']), 'nombre, apellido, id_escuela');
     $plan_actual['escuela'] = $escuela->abrir_escuela(array('gn_escuela._id'=>$plan_actual['usuario']['id_escuela']));
     return $plan_actual;
+}
+
+function actualizar_metodo($id_registro, $arr_metodo)
+{
+    $respuesta = array('msj' => 'no');
+    $pln_registro = new PlnRegistro();
+    $actualizado = $pln_registro->actualizar_metodo($id_registro, $arr_metodo);
+    $respuesta['arr_contenido_td'] = $arr_metodo;
+    return $respuesta;
+}
+
+function actualizar_funsepa($id_registro, $arr_funsepa)
+{
+    $respuesta = array('msj' => 'no');
+    $pln_registro = new PlnRegistro();
+    $actualizado = $pln_registro->actualizar_funsepa($id_registro, $arr_funsepa);
+    $respuesta['arr_contenido_td'] = $arr_funsepa;
+    return $respuesta;
+}
+
+function editar_registro($id_registro, $campo, $value='')
+{
+    $pln_registro = new PlnRegistro();
+    $respuesta = array('msj' => 'no');
+    if($pln_registro->editar_registro($id_registro, $campo, $value)){
+        $respuesta['msj'] = 'si';
+    }
+    return $respuesta;
 }
 ?>
