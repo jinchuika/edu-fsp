@@ -9,7 +9,7 @@ $bd = $libs->incluir('db');
 
 $menu = $libs->incluir('menu', array('nivel_dir'=>$nivel_dir, 'sesion'=>$sesion));
 $menu_exportar = $menu->add('Exportar plan', array('url'=>'#', 'class' => 'export'));
-$menu_exportar->add('Excel', array('url'=>'#', 'id'=>'btn_export', 'class' => 'export'));
+$menu_exportar->add('Excel', array('url'=>'#', 'id'=>'btn_export', 'class' => 'export dom-privado'));
 $menu_exportar->add('Publicar', array('url'=>'javascript:void(0)', 'id'=>'btn_public', 'externo'=>true));
 
 $libs->incluir_clase('app/src/model/ClAnno.class.php');
@@ -38,12 +38,12 @@ $cl_grado = new ClGrado($bd);
     <?php echo $menu->imprimir(); ?>
     <div class="container">
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-md-12">
                 <form id="form_clase" class="form-inline well">
                     <fieldset>
                         <div class="form-group">
-                            <label class="col-md-4 control-label" for="anno">Año</label>
-                            <div class="col-md-4">
+                            <label class="col-lg-3 control-label" for="anno">Año<br></label>
+                            <div class="col-lg-3">
                                 <select id="anno" name="anno" class="form-control col-sm-12">
                                     <?php
                                     foreach ($cl_anno->listar_anno() as $key => $anno) {
@@ -55,8 +55,8 @@ $cl_grado = new ClGrado($bd);
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-2 control-label" for="carrera">Carrera</label>
-                            <div class="col-md-6">
+                            <label class="col-lg-2 control-label" for="carrera">Carrera<br></label>
+                            <div class="col-lg-6">
                                 <select id="carrera" name="carrera" class="form-control col-sm-12">
                                     <?php
                                     foreach ($cl_carrera->listar_carrera() as $key => $carrera) {
@@ -68,8 +68,8 @@ $cl_grado = new ClGrado($bd);
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-4 control-label" for="grado">Grado</label>
-                            <div class="col-md-4">
+                            <label class="col-lg-3 control-label" for="grado">Grado<br></label>
+                            <div class="col-lg-3">
                                 <select id="grado" name="grado" class="form-control col-sm-12">
                                     <?php
                                     foreach ($cl_grado->listar_grado() as $key => $grado) {
@@ -81,10 +81,11 @@ $cl_grado = new ClGrado($bd);
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-4 control-label" for="btn_clase"></label>
-                            <div class="col-md-4">
-                                <button type="submit" id="btn_clase" name="btn_clase" class="btn btn-primary">Abrir plan</button>
-                                <button type="button" id="btn_registro" name="btn_registro" class="btn btn-success">Nuevo registro</button>
+                            <label class="col-lg-3 control-label" for="btn_clase"><br></label>
+                            <div class="col-lg-3" id="control-plan">
+                                <button type="submit" id="btn_clase" name="btn_clase" class="btn btn-primary btn-xs">Abrir plan</button>
+                                <button type="button" id="btn_nuevo_registro" name="btn_nuevo_registro" class="btn btn-success btn-xs dom-privado">Nuevo registro</button>
+                                <button type="button" class="btn btn-xs btn-warning dom-privado" id="btn_editar"> Editar</button>
                             </div>
                         </div>
                     </fieldset>

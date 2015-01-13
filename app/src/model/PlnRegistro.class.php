@@ -139,7 +139,7 @@ class PlnRegistro
         if($this->bd->ejecutar($query, true)){
             $id_registro = $this->bd->lastID();
 
-            !empty($args['n_funsepa']) ? $pln_contenido_funsepa->crear_contenido_funsepa($id_registro, $args['n_funsepa']) : '';
+            !empty($args['n_funsepa']) ? $pln_contenido_funsepa->crear_pln_funsepa($id_registro, $args['n_funsepa']) : '';
             !empty($args['n_metodo'])  ? $pln_metodo->crear_pln_metodo($id_registro, $args['n_metodo']) : '';
 
             $respuesta['msj'] = 'si';

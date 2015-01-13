@@ -112,6 +112,17 @@ function encriptar_string (enc_string) {
     return resultado;
 }
 
+/**
+ * Exporta una tabla a excel
+ * @param  {string} id_tabla el id de la tabla a exportar
+ */
+function exportar_excel (id_tabla) {
+    $("#"+id_tabla).btechco_excelexport({
+        containerid: id_tabla
+        , datatype: $datatype.Table
+    });
+}
+
 $.fn.goTo = function() {
     $('html, body').animate({
         scrollTop: $(this).offset().top + 'px'

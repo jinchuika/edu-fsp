@@ -5,11 +5,34 @@ var modal_form = [];
 modal_c.crear();
 
 /**
-* Abre el plan desde la base de datos
-* @param  {integer} id_plan
-* @uses abrir_registro()
-* @uses habilitar_plan_editable()
-*/
+ * Envía el formulario de la clase, al encontrarla abre el plan
+ * @param  {DOM.Element} formulario El formulario
+ */
+function abrir_clase (formulario) {
+    modal_c.mostrar();
+    $('#tabla_plan').hide();
+
+    $.ajax({
+        url: nivel_entrada+'app/src/libs_plan/gn_plan.php',
+        type: 'post',
+        data: {
+            fn_nombre: 'buscar_plan',
+            args: JSON.stringify(datos_formulario($(formulario)))
+        },
+        success: function (respuesta) {
+            var respuesta = $.parseJSON(respuesta);
+            if(respuesta.msj=='si'){
+                abrir_plan(respuesta._id);
+            }
+        }
+    });
+}
+
+/**
+ * Abre el plan desde la base de datos
+ * @param  {integer} id_plan
+ * @uses abrir_registro()
+ */
 function abrir_plan (id_plan, publico) {
     __CNB__.cargar_datos();
     modal_c.mostrar();
@@ -23,29 +46,33 @@ function abrir_plan (id_plan, publico) {
         success: function (respuesta) {
             var plan_actual = $.parseJSON(respuesta);
             $("#tabla_plan").find("tr:gt(0)").remove();
-            $.each(plan_actual.arr_registro, function (index, registro_actual) {
+            
+            $.each(plan_actual['arr_registro'], function (index, registro_actual) {
                 abrir_registro(registro_actual, 'tbody_plan');
             });
+
             if(publico!=true){
-                habilitar_plan_editable();
-                $('.export').show();
-                $('#btn_registro').show();
-                $('#btn_export').show();
+                habilitar_edicion_plan(false);
+                $('.dom-privado').show();
                 $('.lbl_public').hide();
             }
             else{
+                $('.dom-privado').hide();
                 $('.lbl_public').show();
             }
-            $('#tabla_plan').show();
+            $('#tabla_plan').show().stupidtable();
             __CNB__.plan_actual = plan_actual;
-            $("#tabla_plan").stupidtable();
-            abrir_info_plan(id_plan);
+            abrir_info_usuario(id_plan);
             modal_c.ocultar();
         }
     });
 }
 
-function abrir_info_plan (id_plan) {
+/**
+ * Muestra la información de quien creó el plan
+ * @param  {integer} id_plan el id del plan
+ */
+function abrir_info_usuario (id_plan) {
     $('#info_plan').hide();
     $.post(nivel_entrada+'app/src/libs_plan/gn_plan.php?fn_nombre=abrir_info_plan', {
         id_plan: id_plan
@@ -60,17 +87,16 @@ function abrir_info_plan (id_plan) {
 }
 
 /**
-* Agrega un registro a la tabla
-* @param  {Array} registro
-* @param  {string} objetivo tabla
-* @uses getObjects()
-* @uses formato_fecha()
-* @uses bloquear_contenido()
-* @todo Habilitar edición
-*/
+ * Agrega un registro a la tabla
+ * @param  {Array} registro
+ * @param  {string} objetivo tabla
+ * @uses getObjects()
+ * @uses formato_fecha()
+ * @uses bloquear_contenido_cnb()
+ */
 function abrir_registro (registro, objetivo) {
     var s_fecha = '<td id="fecha_'+registro._id+'" class="td_fecha" data-id="'+registro._id+'">'+formato_fecha(registro.fecha)+'</td>';
-    var s_contenido = '<td id="contenido_'+registro._id+'" data-id="'+registro.id_contenido+'">'+bloquear_contenido(registro.id_contenido).descripcion+'</td>';
+    var s_contenido = '<td id="contenido_'+registro._id+'" data-id="'+registro.id_contenido+'">'+bloquear_contenido_cnb(registro.id_contenido).descripcion+'</td>';
     
     var s_funsepa = '<td id="td_funsepa_'+registro._id+'">';
     $.each(registro.arr_funsepa, function (index, item) {
@@ -98,19 +124,15 @@ function abrir_registro (registro, objetivo) {
  */
 function escribir_reg_relacion (id_registro, relacion, id_relacion) {
     var temp_relacion = getObjects(__CNB__['arr_'+relacion], '_id', id_relacion)[0];
-    var s_relacion = '';
-    s_relacion += '<span class="reg_'+relacion+'_'+id_registro+'" data-pk="'+id_relacion+'">';
-    s_relacion += '<a target="_blank" href="'+temp_relacion.link+'">'+temp_relacion.descripcion+'</a>';
-    s_relacion += '</span>, ';
-    return s_relacion;
+    return '<a target="_blank" href="'+temp_relacion.link+'">'+temp_relacion.descripcion+'</a>, ';
 }
 
 /**
-* Bloquea un contenido de la instancia de CNB actual
-* @param  {string} id_contenido
-* @return {Object} el contenido bloqueado
-*/
-function bloquear_contenido (id_contenido) {
+ * Bloquea un contenido de la instancia de CNB actual
+ * @param  {string} id_contenido
+ * @return {Object} el contenido bloqueado
+ */
+function bloquear_contenido_cnb (id_contenido) {
     var contenido_temp = getObjects(__CNB__.arr_contenido, '_id', id_contenido)[0];
     __CNB__.en_uso[contenido_temp._id] = contenido_temp;
     delete __CNB__.arr_contenido[contenido_temp._id];
@@ -119,26 +141,31 @@ function bloquear_contenido (id_contenido) {
 
 
 /**
-* Habilita un contenido de la instancia de CNB actual
-* @param  {string} id_contenido
-* @return {Object} el contenido habilitado
-*/
-function habilitar_contenido (id_contenido) {
+ * Habilita un contenido de la instancia de CNB actual
+ * @param  {string} id_contenido
+ * @return {Object} el contenido habilitado
+ */
+function habilitar_contenido_cnb (id_contenido) {
     var contenido_temp = getObjects(__CNB__.en_uso, '_id', id_contenido)[0];
     __CNB__.arr_contenido[contenido_temp._id] = contenido_temp;
     delete __CNB__.en_uso[contenido_temp._id];
     return(contenido_temp);
 }
 
+/**
+ * Cambia los permisos de publicación del plan
+ * @param  {integer} id_plan el ID del plan
+ * @param  {boolean} tipo    si se comparte o no
+ */
 function publicar_plan (id_plan, tipo) {
     $.post(nivel_entrada+'app/src/libs_plan/gn_plan.php?fn_nombre=publicar_plan', {
         id_plan: id_plan,
         tipo: tipo
     }, function (respuesta) {
-        if(respuesta.msj=='si' && tipo==1){
+        if(respuesta.msj=='si' && tipo==true){
             bootbox.alert('Puede compartir su planificación usando el siguiente link<br><br><b>'+ location.host + location.pathname+'?id='+id_plan+'</b>');
         }
-        if(respuesta.msj=='si' && tipo==0){
+        if(respuesta.msj=='si' && tipo==false){
             $.gritter.add({
                 title: 'Sin compartir',
                 text: 'La planificación actual no se compartirá'
@@ -149,75 +176,48 @@ function publicar_plan (id_plan, tipo) {
 }
 
 /**
-* Habilita que los registros puedan ser editado/eliminado
-* @see borrar_registro()
-*/
-function habilitar_plan_editable () {
-    $('.dropdown-edit').remove();
-    $('.td_fecha').html(function () {
-        var id_registro = $(this).data('id');
-        var s_drop = '<div class="dropdown dropdown-edit">'+
-        '<a data-toggle="dropdown" href="#"><i class="fa fa-cog"></i></a>'+
-        '<ul class="dropdown-menu" role="menu">'+
-        '<li><a class="btn_editar_reg" id="btn_editar_reg_'+id_registro+'" data-id="'+id_registro+'" value="false">Editar</a></li>'+
-        '<li><a href="#" class="btn_borrar_reg" data-id="'+id_registro+'">Borrar</a></li>'+
-        '</ul>'+
-        '</div>';
-        return $(this).html()+s_drop;
-    });
-    
-    $('.campo_registro').editable({
-        url: nivel_entrada+'app/src/libs_plan/gn_plan.php?fn_nombre=editar_registro',
-        placement: 'left'
+ * Activa / desactiva el modo edición
+ * @param  {boolean} accion Si se puede editar o no
+ */
+function habilitar_edicion_plan (accion) {
+    $.each($('#tabla_plan').find('tr'), function (index, fila) {
+        habilitar_edicion_registro($(fila).data('id'),  (accion ? 'true' : 'false'));
     });
 
-    $('.btn_editar_reg').off().on('click', function () {
-        habilitar_edicion_registro($(this).data('id'), $(this).val());
-    });
-    $('.btn_borrar_reg').off().on('click', function () {
-        borrar_registro($(this).data('id'));
-    });
+    if(accion==true){
+        $('.campo_registro').editable({
+            url: nivel_entrada+'app/src/libs_plan/gn_plan.php?fn_nombre=editar_registro',
+            placement: 'left'
+        });
+        
+        $('#btn_editar').text('Editar (On)')
+        .removeClass('btn-warning').addClass('btn-info')
+        .attr('onclick', 'habilitar_edicion_plan(false)');
+    }
+    else{
+        $('.campo_registro').editable('destroy');
+        
+        $('#btn_editar').text('Editar (Off)')
+        .removeClass('btn-info').addClass('btn-warning')
+        .attr('onclick', 'habilitar_edicion_plan(true)');
+    }
 }
 
+/**
+ * Permite que una fila sea editada
+ * @param  {integer} id_registro El id del registro a editar
+ * @param  {string} accion      'false' para deshabilitar
+ */
 function habilitar_edicion_registro (id_registro, accion) {
     $('.temp_edit_'+id_registro).remove();
     if(accion!=='false'){
-        //agregar_boton_eliminar_rel(id_registro, 'funsepa');
-        //agregar_boton_eliminar_rel(id_registro, 'metodo');
-        $('#fecha_'+id_registro).append('<button class="temp_edit_'+id_registro+' btn btn-info" id="btn_editar_ok_'+id_registro+'" onclick="habilitar_edicion_registro('+id_registro+',\'false\');"><i class="glyphicon glyphicon-ok"></button>');
-        $('#td_funsepa_'+id_registro).append('<a class="temp_edit_'+id_registro+' btn btn-xs btn-info" id="a_funsepa_'+id_registro+'" onclick="agregar_select_rel('+id_registro+', \'funsepa\')">Editar contenido</a>');
-        $('#td_metodo_'+id_registro).append('<a class="temp_edit_'+id_registro+' btn btn-xs btn-info" id="a_metodo_'+id_registro+'" onclick="agregar_select_rel('+id_registro+', \'metodo\')">Editar método</a>');
-
-        $('.btn_editar_reg').val('false');
+        $('#fecha_'+id_registro).append(' <a href="#" class="btn_borrar_reg temp_edit_'+id_registro+' label label-danger" data-id="'+id_registro+'" onclick="borrar_registro('+id_registro+');"><i class="glyphicon glyphicon-trash"></i></a>');
+        $('#td_funsepa_'+id_registro).append(' <a class="temp_edit_'+id_registro+' label label-primary" id="a_funsepa_'+id_registro+'" onclick="agregar_select_rel('+id_registro+', \'funsepa\')"><i class="glyphicon glyphicon-edit"></i></a>');
+        $('#td_metodo_'+id_registro).append(' <a class="temp_edit_'+id_registro+' label label-primary" id="a_metodo_'+id_registro+'" onclick="agregar_select_rel('+id_registro+', \'metodo\')"><i class="glyphicon glyphicon-edit"></i></a>');
     }
     else{
-        remover_boton_eliminar_rel(id_registro, 'funsepa');
-        remover_boton_eliminar_rel(id_registro, 'metodo');
         $('.temp_edit_'+id_registro).remove();
-        $('.btn_editar_reg').val('true');
     }
-}
-
-/**
- * Agrega el botón para eliminar el registro de contenido FUNSEPA y Método
- * @param  {string} relacion funsepa|metodo
- */
-function agregar_boton_eliminar_rel (id_registro, relacion) {
-    $('.reg_'+relacion+'_'+id_registro).html(function () {
-        var contenido = $(this).html();
-        contenido += '<a onclick="eliminar_reg_relacion('+id_registro+','+$(this).data('pk')+', \''+relacion+'\')" class="del_'+relacion+'_'+id_registro+' btn"> <i class="glyphicon glyphicon-remove"> </a>';
-        return contenido;
-    });
-    $('.reg_'+relacion+'_'+id_registro).addClass('label label-warning');
-}
-
-/**
- * Remueve el botón para eliminar el registro de contenido FUNSEPA y Método
- * @param  {string} relacion funsepa|metodo
- */
-function remover_boton_eliminar_rel (id_registro, relacion) {
-    $('.reg_'+relacion+'_'+id_registro).removeClass('label label-warning');
-    $('.del_'+relacion+'_'+id_registro).remove();
 }
 
 /**
@@ -256,7 +256,6 @@ function agregar_select_rel (id_registro, relacion) {
                             });
                         }
                         $('#td_'+relacion+'_'+id_registro).html(contenido_td);
-                        habilitar_plan_editable();
                         habilitar_edicion_registro(id_registro, relacion);
                         $('#temp_'+relacion).parents('.bootbox').modal('hide');
                     }, 'json');
@@ -265,7 +264,7 @@ function agregar_select_rel (id_registro, relacion) {
         }
     }).on('shown.bs.modal', function () {
         var arr_contenido = (relacion=='funsepa' ? obtener_rel_funsepa($('#contenido_'+id_registro).data('id')) : __CNB__['arr_metodo']);
-        populateSelect('temp_'+relacion, arr_contenido, true);
+        poblar_select('temp_'+relacion, arr_contenido, true);
     }).on('success.form.bv', function(e) {
         e.preventDefault();
         enviar_form_rel($(e.target), id_registro, relacion);
@@ -295,19 +294,19 @@ function eliminar_reg_relacion (id_registro, id_relacion, relacion) {
 }
 
 /**
-* Borra el registro
-* @param  {integer} id_registro
-* @return
-*/
+ * Borra el registro
+ * @param  {integer} id_registro
+ * @return
+ */
 function borrar_registro (id_registro) {
     bootbox.confirm('¿Está seguro de que desea borrar ese registro?', function (respuesta) {
-        barra_carga.mostrar();
         if(respuesta===true){
+            barra_carga.mostrar();
             $.post(nivel_entrada+'app/src/libs_plan/gn_plan.php?fn_nombre=borrar_registro', {
                 id_registro: id_registro
             }, function (respuesta) {
                 if(respuesta.msj=='si'){
-                    habilitar_contenido($('#contenido_'+id_registro).data('id'));
+                    habilitar_contenido_cnb($('#contenido_'+id_registro).data('id'));
                     $('#tr_'+id_registro).remove();
                     $.gritter.add({
                         title: 'Eliminado',
@@ -321,43 +320,6 @@ function borrar_registro (id_registro) {
     });
 }
 
-/**
-* Llena un select
-* @param  {string} id_elemento
-* @param  {Array} items    el listado para llenar el select
-* @param {bool} usar_select2 renderiza el select
-*/
-function populateSelect(id_elemento, items, usar_select2) {
-    $('#'+id_elemento).empty();
-    $.each(items, function (index, item) {
-        $('#'+id_elemento).append('<option value="'+item._id+'">'+item.descripcion+'</option>');
-    });
-    $('#'+id_elemento).trigger('change');
-    !usar_select2 ? '' : $('#'+id_elemento).select2();
-}
-
-/**
-* Llena los selects del formulario para un registro
-*/
-function poblar_formulario_registro () {
-    /*Poblar métodos*/
-    populateSelect('n_metodo', __CNB__.arr_metodo, true);
-    /*Poblar indicadores*/
-    $('#n_comp').off().on('change', function () {
-        populateSelect('n_indicador', getObjects(__CNB__.arr_indicador, 'id_competencia', $(this).val()), true);
-    });
-    /*Poblar contenido de mineduc*/
-    $('#n_indicador').off().on('change', function (value) {
-        populateSelect('n_contenido', getObjects(__CNB__.arr_contenido, 'id_indicador', $(this).val()), true);
-    });
-    /*Poblar contenido de funsepa*/
-    $('#n_contenido').off().on('change', function (value) {
-        var arr_funsepa = obtener_rel_funsepa($(this).val());
-        populateSelect('n_funsepa', arr_funsepa, true);
-    });
-    /*Poblar competencias*/
-    populateSelect('n_comp', getObjects(__CNB__.arr_competencia, 'id_grado', __CNB__.plan_actual.id_grado), true);
-}
 
 /**
  * Obtiene el listador de contenido de FUNSEPA para uno del mineduc
@@ -435,26 +397,69 @@ function enviar_form_registro (formulario) {
     },
     function(result) {
         abrir_registro(result[0], 'tbody_plan');
-        habilitar_plan_editable();
         formulario.parents('.bootbox').modal('hide');
     }, 'json');
 }
 
-function activar_modo_edicion (accion) {
-    if(accion==true){
+/**
+ * Llena un select
+ * @param  {string} id_elemento
+ * @param  {Array} items    el listado para llenar el select
+ * @param {bool} usar_select2 renderiza el select
+ */
+function poblar_select(id_elemento, items, usar_select2) {
+    $('#'+id_elemento).empty();
+    $.each(items, function (index, item) {
+        $('#'+id_elemento).append('<option value="'+item._id+'">'+item.descripcion+'</option>');
+    });
+    $('#'+id_elemento).trigger('change');
+    !usar_select2 ? '' : $('#'+id_elemento).select2();
+}
+/**
+ * Llena los selects del formulario para un registro
+ */
+function poblar_formulario_registro () {
+    /*Poblar métodos*/
+    poblar_select('n_metodo', __CNB__.arr_metodo, true);
+    /*Poblar indicadores*/
+    $('#n_comp').off().on('change', function () {
+        poblar_select('n_indicador', getObjects(__CNB__.arr_indicador, 'id_competencia', $(this).val()), true);
+    });
+    /*Poblar contenido de mineduc*/
+    $('#n_indicador').off().on('change', function (value) {
+        poblar_select('n_contenido', getObjects(__CNB__.arr_contenido, 'id_indicador', $(this).val()), true);
+    });
+    /*Poblar contenido de funsepa*/
+    $('#n_contenido').off().on('change', function (value) {
+        var arr_funsepa = obtener_rel_funsepa($(this).val());
+        poblar_select('n_funsepa', arr_funsepa, true);
+    });
+    /*Poblar competencias*/
+    poblar_select('n_comp', getObjects(__CNB__.arr_competencia, 'id_grado', __CNB__.plan_actual.id_grado), true);
+}
 
-    }
+/**
+ * Llena el formulario para seleccionar la clase del plan
+ */
+function poblar_formulario_clase () {
+    var arr_grado = new Array();
+    $.each($('#grado').find('*'), function (index, item) {
+        arr_grado[$(item).val()] = {_id: $(item).val(), descripcion: $(item).data('descripcion'), id_carrera: $(item).data('id_carrera')};
+    });
+    $('#carrera').on('change', function () {
+        poblar_select('grado', getObjects(arr_grado, 'id_carrera', $(this).val()));
+    }).trigger('change');
 }
 
 $(document).ready(function () {
-    $('#btn_registro').hide();
-    $('.export').hide();
+    $('.dom-privado').hide();
+    poblar_formulario_clase();
+
     $("#btn_export").click(function () {
-        $("#tabla_plan").btechco_excelexport({
-            containerid: "tabla_plan"
-            , datatype: $datatype.Table
-        });
+        habilitar_edicion_plan(false);
+        exportar_excel('tabla_plan');
     });
+
     $('#btn_public').on('click', function () {
         bootbox.dialog({
             message: "Decida si esta planificación es pública",
@@ -464,52 +469,26 @@ $(document).ready(function () {
                     label: "Compartir",
                     className: "btn-success",
                     callback: function() {
-                        publicar_plan(__CNB__.plan_actual._id, 1);
+                        publicar_plan(__CNB__.plan_actual._id, true);
                     }
                 },
                 danger: {
                     label: "No compartir",
                     className: "btn-danger",
                     callback: function() {
-                        publicar_plan(__CNB__.plan_actual._id, 0);
+                        publicar_plan(__CNB__.plan_actual._id, false);
                     }
                 },
             }
         });
     });
-
-    var arr_grado = new Array();
-    $.each($('#grado').find('*'), function (index, item) {
-        arr_grado[$(item).val()] = {_id: $(item).val(), descripcion: $(item).data('descripcion'), id_carrera: $(item).data('id_carrera')};
-    });
-    $('#carrera').on('change', function () {
-        populateSelect('grado', getObjects(arr_grado, 'id_carrera', $(this).val()));
-    }).trigger('change');
-
+    
     $('#form_clase').submit(function (e) {
         e.preventDefault();
-
-        modal_c.mostrar();
-        $('#tabla_plan').hide();
-        $('#btn_registro').hide();
-
-        $.ajax({
-            url: nivel_entrada+'app/src/libs_plan/gn_plan.php',
-            type: 'post',
-            data: {
-                fn_nombre: 'buscar_plan',
-                args: JSON.stringify(datos_formulario($('#form_clase')))
-            },
-            success: function (respuesta) {
-                var respuesta = $.parseJSON(respuesta);
-                if(respuesta.msj=='si'){
-                    abrir_plan(respuesta._id);
-                }
-            }
-        });
+        abrir_clase($('#form_clase'));
     });
 
-    $('#btn_registro').on('click', function () {
+    $('#btn_nuevo_registro').off().on('click', function () {
         mostrar_form_registro();
     });
 })
