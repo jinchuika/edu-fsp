@@ -28,13 +28,14 @@ function abrir_cnb($filtros=null, $tipo='lista')
     $cnb_funsepa = new CnbFunsepa();
     $cnb_metodo = new CnbMetodo();
     
-    $arr_competencia = array();
-    $arr_indicador = array();
-    $arr_contenido = array();
-    $arr_rel_contenido = array();
-    $arr_funsepa = array();
+    $arr_competencia = $cnb_competencia->abrir_competencia();
+    $arr_indicador = $cnb_indicador->abrir_indicador();
+    $arr_contenido = $cnb_contenido->abrir_contenido();
+    $arr_rel_contenido = $cnb_rel_contenido->abrir_rel_contenido();
+    $arr_funsepa = $cnb_funsepa->abrir_funsepa();
+    
         //obtener todas las competencias con el filtro
-    foreach ($cnb_competencia->abrir_competencia($filtros) as $competencia) {
+    /*foreach ($cnb_competencia->abrir_competencia($filtros) as $competencia) {
         $competencia['arr_indicador'] = array();
             //obtener todos los indicadores para el filtro (la competencia)
         foreach ($cnb_indicador->abrir_indicador(array('id_competencia'=>$competencia['_id'])) as $indicador) {
@@ -56,7 +57,7 @@ function abrir_cnb($filtros=null, $tipo='lista')
             ($tipo=='object') ? array_push($competencia['arr_indicador'], $indicador) : $arr_indicador[$indicador['_id']] = $indicador;
         }
         ($tipo=='object') ? array_push($arr_competencia, $competencia) : $arr_competencia[$competencia['_id']] = $competencia;
-    }
+    }*/
     
     return ($tipo=='object') ? $arr_competencia : array('arr_competencia'=>$arr_competencia, 'arr_indicador'=>$arr_indicador, 'arr_contenido'=>$arr_contenido, 'arr_rel_contenido'=>$arr_rel_contenido, 'arr_funsepa'=>$arr_funsepa, 'arr_metodo'=>$cnb_metodo->abrir_metodo());
 }

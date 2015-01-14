@@ -17,12 +17,12 @@ class CnbFunsepa
      * @param  Array $arr_filtro
      * @return Array
      */
-    public function abrir_funsepa($arr_filtro)
+    public function abrir_funsepa($arr_filtro=null)
     {
         $respuesta = array();
         $query = "select * from cnb_funsepa ";
         if(is_array($arr_filtro)){
-            $query .= " where _id>0 ";
+            $query .= " where 1=1 ";
             foreach ($arr_filtro as $key => $filtro) {
                 $query .= " and ".$key."=".$filtro;
             }

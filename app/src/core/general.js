@@ -25,6 +25,13 @@ function datos_formulario($form){
 }
 
 //return an array of objects according to key, value, or key and value matching
+/**
+ * Devuelve un array de objetos que coinciden
+ * @param  {Object|Array} obj [description]
+ * @param  {string} key El identificador a buscar
+ * @param  {string|integer} val el valor a buscar
+ * @return {Object}     El objeto con array de respuestas
+ */
 function getObjects(obj, key, val) {
     var objects = [];
     for (var i in obj) {
@@ -33,7 +40,6 @@ function getObjects(obj, key, val) {
             objects = objects.concat(getObjects(obj[i], key, val));    
         }
         else{
-            //if key matches and value matches or if key matches and value is not passed (eliminating the case where key matches but passed value does not)
             if (i == key && obj[i] == val || i == key && val == '') { //
                 objects.push(obj);
             } else if (obj[i] == val && key == ''){

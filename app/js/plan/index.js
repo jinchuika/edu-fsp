@@ -1,4 +1,7 @@
-var __CNB__ = new Cnb();
+var __CNB__ = new Cnb(nivel_entrada, function () {
+    $('#btn_clase').prop('disabled', false);
+});
+
 var modal_c = modal_carga_gn();
 var barra_carga = new BarraCargaInf();
 var modal_form = [];
@@ -22,7 +25,10 @@ function abrir_clase (formulario) {
         success: function (respuesta) {
             var respuesta = $.parseJSON(respuesta);
             if(respuesta.msj=='si'){
-                abrir_plan(respuesta._id);
+                __CNB__.cargar_datos(function () {
+                    abrir_plan(respuesta._id);
+                    console.log(__CNB__);
+                });
             }
         }
     });
@@ -34,7 +40,6 @@ function abrir_clase (formulario) {
  * @uses abrir_registro()
  */
 function abrir_plan (id_plan, publico) {
-    __CNB__.cargar_datos();
     modal_c.mostrar();
     $.ajax({
         url: nivel_entrada+'app/src/libs_plan/gn_plan.php',
@@ -64,6 +69,7 @@ function abrir_plan (id_plan, publico) {
             __CNB__.plan_actual = plan_actual;
             abrir_info_usuario(id_plan);
             modal_c.ocultar();
+            console.log(__CNB__.en_uso);
         }
     });
 }
@@ -96,7 +102,8 @@ function abrir_info_usuario (id_plan) {
  */
 function abrir_registro (registro, objetivo) {
     var s_fecha = '<td id="fecha_'+registro._id+'" class="td_fecha" data-id="'+registro._id+'">'+formato_fecha(registro.fecha)+'</td>';
-    var s_contenido = '<td id="contenido_'+registro._id+'" data-id="'+registro.id_contenido+'">'+bloquear_contenido_cnb(registro.id_contenido).descripcion+'</td>';
+    var contenido = bloquear_contenido_cnb(registro.id_contenido).descripcion;
+    var s_contenido = '<td id="contenido_'+registro._id+'" data-id="'+registro.id_contenido+'">'+contenido+'</td>';
     
     var s_funsepa = '<td id="td_funsepa_'+registro._id+'">';
     $.each(registro.arr_funsepa, function (index, item) {
@@ -113,6 +120,7 @@ function abrir_registro (registro, objetivo) {
     var s_actividad = '<td id="actividad_'+registro._id+'"><a class="campo_registro" data-pk="'+registro._id+'" data-name="actividad">'+registro.actividad+'</a></td>';
     var s_recurso = '<td id="recurso_'+registro._id+'"><a class="campo_registro" data-pk="'+registro._id+'" data-name="recurso">'+registro.recurso+'</a></td>';
     $('#'+objetivo).append('<tr id="tr_'+registro._id+'" data-id="'+registro._id+'">'+s_fecha+s_contenido+s_funsepa+s_actividad+s_recurso+s_metodo+'</tr>');
+    return true;
 }
 
 /**
@@ -134,9 +142,14 @@ function escribir_reg_relacion (id_registro, relacion, id_relacion) {
  */
 function bloquear_contenido_cnb (id_contenido) {
     var contenido_temp = getObjects(__CNB__.arr_contenido, '_id', id_contenido)[0];
-    __CNB__.en_uso[contenido_temp._id] = contenido_temp;
-    delete __CNB__.arr_contenido[contenido_temp._id];
-    return(contenido_temp);
+    if(contenido_temp){
+        __CNB__.en_uso[contenido_temp._id-1] = contenido_temp;
+        delete __CNB__.arr_contenido[contenido_temp._id-1];
+        return(contenido_temp);
+    }
+    else{
+        return {descripcion: 'Error al cargar. Por favor pida ayuda.'};
+    }
 }
 
 
@@ -147,8 +160,8 @@ function bloquear_contenido_cnb (id_contenido) {
  */
 function habilitar_contenido_cnb (id_contenido) {
     var contenido_temp = getObjects(__CNB__.en_uso, '_id', id_contenido)[0];
-    __CNB__.arr_contenido[contenido_temp._id] = contenido_temp;
-    delete __CNB__.en_uso[contenido_temp._id];
+    __CNB__.arr_contenido[contenido_temp._id-1] = contenido_temp;
+    delete __CNB__.en_uso[contenido_temp._id-1];
     return(contenido_temp);
 }
 
@@ -483,7 +496,7 @@ $(document).ready(function () {
         });
     });
     
-    $('#form_clase').submit(function (e) {
+    $('#form_clase').off().on('submit', function (e) {
         e.preventDefault();
         abrir_clase($('#form_clase'));
     });

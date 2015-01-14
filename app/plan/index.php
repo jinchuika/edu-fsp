@@ -83,7 +83,7 @@ $cl_grado = new ClGrado($bd);
                         <div class="form-group">
                             <label class="col-lg-3 control-label" for="btn_clase"><br></label>
                             <div class="col-lg-3" id="control-plan">
-                                <button type="submit" id="btn_clase" name="btn_clase" class="btn btn-primary btn-xs">Abrir plan</button>
+                                <button type="submit" id="btn_clase" disabled="true" name="btn_clase" class="btn btn-primary btn-xs">Abrir plan</button>
                                 <button type="button" id="btn_nuevo_registro" name="btn_nuevo_registro" class="btn btn-success btn-xs dom-privado">Nuevo registro</button>
                                 <button type="button" class="btn btn-xs btn-warning dom-privado" id="btn_editar"> Editar</button>
                             </div>
@@ -195,7 +195,6 @@ if(!empty($id_publica)){
     $plan_actual = $gn_plan->buscar_plan(array('gn_plan._id'=>$id_publica, 'public'=>1), 'gn_plan._id, id_clase, id_user');
     if($plan_actual){
         $clase_actual = $gn_clase->abrir_clase(array('_id'=>$plan_actual['id_clase']));
-
         echo "$('#anno').val(".$clase_actual['id_anno'].");
         ";
         echo "$('#carrera').val(".$clase_actual['id_carrera'].");
@@ -203,8 +202,6 @@ if(!empty($id_publica)){
         echo "$('#grado').val(".$clase_actual['id_grado'].");
         ";
         echo "abrir_plan(".$plan_actual['_id'].", ".($sesion->get('id_user')==$plan_actual['id_user'] ? 'false' : 'true').");";
-        echo "console.log(".$clase_actual['id_anno'].");";
-        echo 'console.log('.$plan_actual['id_clase'].');';
     }
 }
 ?>
