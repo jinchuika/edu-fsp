@@ -101,21 +101,54 @@ class User
         return $respuesta;
     }
 
+    /**
+     * Modifica el password del usuario
+     * @param  string $id_user  id del usuario a modificar
+     * @param  string $old_pass password antiguo (encriptado)
+     * @param  string $new_pass password nuevo (encriptado)
+     * @uses Login Para encriptar y desencriptar
+     * @return Array           {msj}
+     */
     public function cambiar_password($id_user, $old_pass, $new_pass)
     {
         $respuesta = array('msj'=>'no');
         $this->libs->incluir_clase('includes/auth/Login.class.php');
-        $old_pass = Login::desencriptar($old_pass);
-        $query_old = "select _id from user where _id=".$id_user." and password='".$old_pass."' ";
+
+        $query_salt = "select salt from user where _id=".$id_user;
+        $stmt_salt = $this->bd->ejecutar($query_salt);
+        $salt = $this->bd->obtener_fila($stmt_salt);
+        $password = Login::desencriptar($old_pass).$salt['salt'];
+        $password = hash('sha256', $password);
+
+        $query_old = "select _id from user where _id=".$id_user." and password='".$password."' ";
         $stmt_old = $this->bd->ejecutar($query_old);
         $usuario = $this->bd->obtener_fila($stmt_old);
         if(!empty($usuario)){
-            $respuesta = $this->editar_usuario($id_user, 'password', Login::desencriptar($new_pass));
+            $nuevo = Login::encriptar(Login::desencriptar($new_pass));
+            $respuesta = $this->editar_usuario($id_user, 'password', $nuevo['string']);
+            $respuesta = $this->editar_usuario($id_user, 'salt', $nuevo['key']);
+            $respuesta['msj'] = 'si';
         }
         else{
             $respuesta['error'] = 'La contraseña actual no coincide';
         }
         return $respuesta;
+    }
+
+    public function datos_password($mail)
+    {
+        $respuesta = array('msj'=>'no');
+        $arr_encriptado = array();
+        $this->libs->incluir_clase('includes/auth/Login.class.php');
+
+        $usuario = $this->abrir_usuario(array('mail'=>$mail), 'username, mail, salt');
+        //$query_usuario = "select  from user where mail='".$mail."'";
+        //$stmt_usuario = $this->bd->ejecutar($query_usuario, true);
+
+        if(!empty($usuario)){
+            $usuario['username'] = Login::esconder_string($usuario['username']);
+        }
+        return $usuario;
     }
 }
 ?>

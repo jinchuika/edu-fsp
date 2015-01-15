@@ -139,7 +139,7 @@ class Menu {
         
         foreach ($this->whereParent($parent_id) as $item)
         {
-            $items .= "\n<{$element} {$this->parseAttr($item->attributes())}>";
+            $items .= "    \n<{$element} {$this->parseAttr($item->attributes())}>";
             $items .= "<a ".($item->hasChildren() ? 'class="dropdown-toggle" data-toggle="dropdown"' : '')." href=\"{$item->link->url}\"{$this->parseAttr($item->link->attributes)}>{$item->link->text}</a>";
 
             if( $item->hasChildren() ) {
@@ -264,7 +264,7 @@ class Menu {
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="#">FUNSEPA</a>
+              <a class="navbar-brand" href="'.$this->nivel_dir.'">FUNSEPA</a>
             </div>
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">

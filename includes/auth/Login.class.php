@@ -31,11 +31,10 @@ class Login
         $query = "select _id from user where username='".$username."' AND password='".$password."' ";
         $stmt = $this->bd->ejecutar($query);
         if($usuario = $this->bd->obtener_fila($stmt, 0)){
-            $this->iniciar_sesion($usuario['_id']);
-            return true;
+            return array('valid'=>true, 'id_user'=>$usuario['_id']);
         }
         else{
-            return false;
+            return array('valid'=>false);
         }
     }
     
@@ -43,7 +42,7 @@ class Login
      * Consulta a la base de datos e inicia sesion
      * @param  integer $id_user
      */
-    public function iniciar_sesion($id_user)
+    public function crear_sesion($id_user)
     {
         $query = "
         select
@@ -70,8 +69,6 @@ class Login
             $sesion->set("arr_permiso",$sesion->mostrar_permisos());
         }
     }
-
-
     
     /**
      * algoritmo para desencriptar contraseñas
@@ -80,6 +77,7 @@ class Login
      */
     public static function desencriptar($decrypt_string='')
     {
+        $resultado = '';
         $arr_convert = explode("-", $decrypt_string);
         foreach ($arr_convert as $caracter) {
             if(!empty($caracter)){
@@ -102,6 +100,22 @@ class Login
         $stored_salt = hash('sha256', $real_salt);
 
         return array('key'=>$salt, 'string' => $stored_salt);
+    }
+
+    public static function esconder_string ($string) {
+        $resultado = '';
+        for ($i=0; $i < strlen($string); $i++) { 
+            $llave = rand(1, 50) + 1;
+            $numero = ord(substr($string, $i)) * $llave;
+            $resultado .= '-'.$numero.'.'.($llave-1);
+        }
+        return $resultado;
+    }
+
+    public static function recuperar_password($user, $salt)
+    {
+        $string = $user.'__'.self::esconder_string(date('Y-m'));
+        return $string;
     }
 }
 ?>

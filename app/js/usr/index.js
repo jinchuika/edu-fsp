@@ -40,9 +40,10 @@ function cambiar_password () {
                     className: "btn-success",
                     callback: function () {
                         $.ajax({
-                            url: nivel_entrada + 'app/src/libs_usr/user.php?fn_nombre=cambiar_password',
+                            url: nivel_entrada + 'app/src/libs_usr/user.php',
                             dataType: 'json',
                             data:{
+                                fn_nombre: 'cambiar_password',
                                 id_user: $('#id_user').val(),
                                 old_pass: encriptar_string($('#old_pass').val()),
                                 new_pass: encriptar_string($('#new_pass1').val())

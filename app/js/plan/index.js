@@ -27,7 +27,6 @@ function abrir_clase (formulario) {
             if(respuesta.msj=='si'){
                 __CNB__.cargar_datos(function () {
                     abrir_plan(respuesta._id);
-                    console.log(__CNB__);
                 });
             }
         }
@@ -69,7 +68,6 @@ function abrir_plan (id_plan, publico) {
             __CNB__.plan_actual = plan_actual;
             abrir_info_usuario(id_plan);
             modal_c.ocultar();
-            console.log(__CNB__.en_uso);
         }
     });
 }

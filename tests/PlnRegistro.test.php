@@ -1,19 +1,18 @@
 <?php
-require_once dirname(__FILE__) . '/../app/src/model/PlnRegistro.class.php';
+require_once dirname(__FILE__) . '/../includes/auth/Login.class.php';
 
 
-class PlnRegistroTest extends PHPUnit_Framework_TestCase
+class LoginTest extends PHPUnit_Framework_TestCase
 {
     private $registro;
     
-    public function setUp()
-    {
-        # code...
-    }
-    
+      
     public function testCreate()
     {
-        $this->registro = new PlnRegistro();
+    	$string = 'hola';
+        $encriptada = Login::esconder_string('hola');
+        $desencriptada = Login::desencriptar($encriptada);
+        echo $string."\n".$encriptada."\n".$desencriptada;
     }   
 }
 ?>
