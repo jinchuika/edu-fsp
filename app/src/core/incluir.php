@@ -8,6 +8,7 @@ class Incluir
     var $nivel_entrada = 0;
     var $camino_relativo = '';
     private $lista_incluido = array();
+    public $nivel = '';
     
     /**
      * Crea el objeto para incluir

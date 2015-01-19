@@ -1,16 +1,17 @@
 <?php
 class Login
 {
-    
-    function __construct($bd=null)
+    public $libs;
+    function __construct($libs=null)
     {
-        if(empty($bd)){
+        if(!($libs instanceof Incluir)){
             require_once('../../app/src/core/incluir.php');
             $nivel_dir = 2;
-            $libs = new Incluir($nivel_dir);
-            $this->bd = $libs->incluir('db');
+            $this->libs = new Incluir($nivel_dir);
+        }else{
+            $this->libs = $libs;
         }
-        $this->bd = (!empty($bd)) ? $bd : $this->bd;
+        $this->bd = $this->libs->incluir('db');
     }
 
     /**
@@ -21,43 +22,34 @@ class Login
      */
     public function log_in($username, $password)
     {
-        $query_salt = "select salt from user where username='".$username."'";
-        $stmt_salt = $this->bd->ejecutar($query_salt);
-        $salt_result = $this->bd->obtener_fila($stmt_salt);
+        $this->libs->incluir_clase('app/src/model/User.class.php');
+        $user = new User($this->libs);
+        $salt_result = $user->abrir_usuario(array('username'=>$username), 'salt');
 
         $password = $this->desencriptar($password).$salt_result['salt'];
         $password = hash('sha256', $password);
 
-        $query = "select _id from user where username='".$username."' AND password='".$password."' ";
-        $stmt = $this->bd->ejecutar($query);
-        if($usuario = $this->bd->obtener_fila($stmt, 0)){
+        $usuario = $user->abrir_usuario(array('username'=>$username, 'password' => $password), 'user._id');
+        if(!empty($usuario)){
             return array('valid'=>true, 'id_user'=>$usuario['_id']);
         }
         else{
             return array('valid'=>false);
         }
     }
-    
+
     /**
      * Consulta a la base de datos e inicia sesion
      * @param  integer $id_user
      */
     public function crear_sesion($id_user)
     {
-        $query = "
-        select
-        user._id,
-        usr_persona._id as id_per,
-        user.id_rol,
-        user.username,
-        usr_persona.nombre,
-        usr_persona.apellido
-        from user
-        inner join usr_persona ON usr_persona._id = user._id
-        where user._id =".$id_user;
-        $stmt = $this->bd->ejecutar($query, true);
-        if($usuario = $this->bd->obtener_fila($stmt, 0)){
-            include 'Sesion.class.php';
+        $this->libs->incluir_clase('app/src/model/User.class.php');
+        $user = new User($this->libs);
+        $campos = 'user._id, usr_persona._id as id_per, id_rol, username, nombre, apellido';
+        $usuario = $user->abrir_usuario(array('user._id'=>$id_user), $campos);
+        if(!empty($usuario)){
+            $this->libs->incluir_clase('includes/auth/Sesion.class.php');
             $sesion = Sesion::getInstance($usuario['_id']);
             $sesion->set("username",$usuario['username']);
             $sesion->set("nombre",$usuario['nombre']);
@@ -67,6 +59,51 @@ class Login
             $sesion->set("rol",$usuario['id_rol']);
             $sesion->set("id_per",$usuario['id_per']);
             $sesion->set("arr_permiso",$sesion->mostrar_permisos());
+        }
+    }
+
+    /**
+     * Crea un string para recuperar la contraseña
+     * @param  string $mail Correo del usuario
+     * @return string       La cadena para enviar por correo
+     */
+    public function crear_string_recovery($mail)
+    {
+        $this->libs->incluir_clase('app/src/model/User.class.php');
+        $user = new User($this->libs);
+        $datos_user = $user->abrir_usuario(array('mail'=>$mail), 'username, salt');
+        if(!empty($datos_user) && $datos_user!==false){
+            $llave = $datos_user['username'].'~'.date('m');
+            $pass_oculto = $this->esconder_string($llave);
+
+            return $datos_user['salt'].'__'.$pass_oculto;
+        }
+        else{
+            return false;
+        }
+    }
+
+    /**
+     * Decodifica una string creado por crear_string_recovery() 
+     * y valida que el usuario exista
+     * @param  string $cadena La cadena a codificar
+     * @return boolean         Si es válido o no
+     */
+    public function validar_string_recovery($cadena)
+    {
+        $this->libs->incluir_clase('app/src/model/User.class.php');
+        $user = new User($this->libs);
+        
+        $partes = explode('__', $cadena);
+        $llave = Login::desencriptar($partes[1]);
+        $usuario = explode('~', $llave);
+        
+        $datos_user = $user->abrir_usuario(array('salt'=>$partes[0], 'username'=>$usuario[0]), 'username');
+        if(!empty($datos_user) && $datos_user!==false){
+            return array('valid'=>true, 'username'=>$usuario[0]);
+        }
+        else{
+            return false;
         }
     }
     
@@ -93,13 +130,16 @@ class Login
      * @param  string $llave La llave para añadir a la encriptacion
      * @return Array        {key, string}
      */
-    public static function encriptar($llave='')
+    public static function encriptar($llave='', $random=true)
     {
-        $salt = bin2hex(mcrypt_create_iv(32, MCRYPT_DEV_URANDOM));
-        $real_salt = $llave.$salt;
+        $salt = bin2hex(mcrypt_create_iv(32, MCRYPT_RAND));
+        $real_salt = ($random==true ? $llave.$salt : $llave);
         $stored_salt = hash('sha256', $real_salt);
 
-        return array('key'=>$salt, 'string' => $stored_salt);
+        return array(
+            'key'=>($random==true ? $salt : $llave),
+            'string' => $stored_salt
+            );
     }
 
     public static function esconder_string ($string) {
@@ -112,10 +152,6 @@ class Login
         return $resultado;
     }
 
-    public static function recuperar_password($user, $salt)
-    {
-        $string = $user.'__'.self::esconder_string(date('Y-m'));
-        return $string;
-    }
+    
 }
 ?>

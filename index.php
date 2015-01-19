@@ -21,8 +21,8 @@ $menu = $libs->incluir('menu');
     <?php echo $menu->imprimir(); ?>
     <div class="container">
         <div class="row">
-            <div class="col-sm-4"></div>
-            <div class="col-sm-4">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
                 <form class="form-horizontal well" id="form_login">
                     <fieldset>
                         <legend>Inicia sesión</legend>
@@ -40,8 +40,16 @@ $menu = $libs->incluir('menu');
                         </div>
                         <div class="form-group">
                             <label class="col-md-4 control-label" for="login"></label>
-                            <div class="col-md-4">
-                                <button type="submit" id="login" name="login" class="btn btn-success">Iniciar sesión</button>
+                            <div class="col-md-6">
+                                <div class="btn-group">
+                                    <button type="submit" id="login" name="login" class="btn btn-success">Iniciar sesión</button>
+                                    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="#" id="btn-recovery">Recuperar contraseña</a></li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
@@ -56,26 +64,8 @@ $menu = $libs->incluir('menu');
         </div>
     </div>
 </body>
-<script>
-
-$(document).ready(function () {
-    $('#form_login').submit(function (e) {
-        e.preventDefault();
-        $.ajax({
-            url: 'includes/libs/login.php',
-            type: 'post',
-            data: {
-                user: $('#username').val(),
-                pass: encriptar_string($('#password').val())
-            },
-            success: function (respuesta) {
-                var respuesta = $.parseJSON(respuesta);
-                if(respuesta.msj=='si'){
-                    window.location = (respuesta.url ? respuesta.url : 'app');
-                }
-            }
-        });
-    });
-});
-</script>
+<?php
+$libs->imprimir('js', 'app/js/auth/Auth.js');
+$libs->imprimir('js', 'app/js/auth/login_page.js');
+?>
 </html>

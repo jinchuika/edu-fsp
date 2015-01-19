@@ -29,6 +29,10 @@ if(!empty($fn_nombre)){
     if($fn_nombre=='cambiar_password'){
         echo json_encode(f_cambiar_password($_GET['id_user'], $_GET['old_pass'], $_GET['new_pass']));
     }
+
+    if($fn_nombre=='nuevo_password'){
+        echo json_encode(f_nuevo_password($_POST['username'], $_POST['password'], $_POST['salt']));
+    }
 }
 
 function f_crear_usuario($args)
@@ -64,5 +68,11 @@ function f_cambiar_password($id_user, $old_pass, $new_pass)
 {
     $usuario = new User();
     return $usuario->cambiar_password($id_user, $old_pass, $new_pass);
+}
+
+function f_nuevo_password($username, $new_pass, $salt)
+{
+    $usuario = new User();
+    return $usuario->nuevo_password($username, $new_pass, $salt);
 }
 ?>

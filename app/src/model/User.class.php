@@ -11,7 +11,6 @@ class User
             $this->libs = $libs;
         }
         $this->bd = $this->libs->incluir('db');
-        
     }
     
     /**
@@ -135,6 +134,11 @@ class User
         return $respuesta;
     }
 
+    /**
+     * Devuelve los datos del passwor de forma oculta
+     * @param  string $mail El mail del usuario
+     * @return Array       {encriptado(username), mail, salt}
+     */
     public function datos_password($mail)
     {
         $respuesta = array('msj'=>'no');
@@ -142,13 +146,25 @@ class User
         $this->libs->incluir_clase('includes/auth/Login.class.php');
 
         $usuario = $this->abrir_usuario(array('mail'=>$mail), 'username, mail, salt');
-        //$query_usuario = "select  from user where mail='".$mail."'";
-        //$stmt_usuario = $this->bd->ejecutar($query_usuario, true);
 
         if(!empty($usuario)){
             $usuario['username'] = Login::esconder_string($usuario['username']);
         }
         return $usuario;
+    }
+
+    public function nuevo_password($username, $new_pass, $salt)
+    {
+        $this->libs->incluir_clase('includes/auth/Login.class.php');
+        $respuesta = array('msj' => 'no');
+        $usuario = $this->abrir_usuario(array('username'=>$username, 'salt'=>$salt), 'user._id');
+        if(!empty($usuario)){
+            $nuevo = Login::encriptar(Login::desencriptar($new_pass));
+            $respuesta = $this->editar_usuario($usuario['_id'], 'password', $nuevo['string']);
+            $respuesta = $this->editar_usuario($usuario['_id'], 'salt', $nuevo['key']);
+            $respuesta = array('msj'=> 'si', 'username' => $username);
+        }
+        return $respuesta;
     }
 }
 ?>
