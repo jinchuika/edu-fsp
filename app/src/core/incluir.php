@@ -32,37 +32,22 @@ class Incluir
     public function incluir($nombre_archivo, $extra=null)
     {
         switch ($nombre_archivo) {
-            case 'jquery':
-                $this->imprimir('js', 'fw/js/jquery.min.js');
-                break;
-            case 'general':
-                $this->imprimir('js', 'app/src/core/general.js', array('nivel_entrada'=>$this->nivel, 'id'=>'js_general'));
-                break;
-            case 'bs':
-                $this->imprimir('meta', 'name="viewport" content="width=device-width, initial-scale=1"');
-                $this->imprimir('css', 'fw/bs/css/bootstrap.min.css');
-                $this->incluir('jquery');
-                $this->imprimir('js', 'fw/bs/js/bootstrap.min.js');
-                $this->imprimir('js', 'fw/js/bootbox.min.js');
-                break;
             case 'theme':
                 $this->imprimir('meta', 'name="viewport" content="width=device-width, initial-scale=1"');
                 $this->imprimir('css', 'fw/theme/plugins/bootstrap-3.2.0/css/bootstrap.min.css');
                 $this->imprimir('css', 'fw/theme/plugins/font-awesome-4.2.0/css/font-awesome.min.css');
                 $this->imprimir('css', 'fw/theme/css/style.min.css');
                 $this->imprimir('css', 'fw/theme/plugins/select2/select2.css');
-                $this->imprimir('css', 'fw/theme/plugins/bootstrap-datepicker/css/datepicker.css');
-                $this->imprimir('css', 'fw/theme/plugins/bootstrap-datepicker/css/datepicker3.css');
                 $this->imprimir('css', 'fw/theme/plugins/bootstrap3-editable/css/bootstrap-editable.css');
                 $this->imprimir('css', 'fw/theme/plugins/gritter/css/jquery.gritter.css');
                 $this->imprimir('css', 'fw/theme/plugins/bs-validator/css/bootstrapValidator.min.css');
                 $this->imprimir('css', 'fw/theme/css/theme/default.css', array('id'=>'theme'));
-                
+
                 $this->imprimir('js', 'fw/theme/plugins/jquery-1.8.2/jquery-1.8.2.min.js');
+                $this->imprimir('js', 'app/src/core/general.js', array('nivel_entrada'=>$this->nivel, 'id'=>'js_general'));
                 $this->imprimir('js', 'fw/theme/plugins/bootstrap-3.2.0/js/bootstrap.min.js');
                 $this->imprimir('js', 'fw/js/bootbox.min.js');
                 $this->imprimir('js', 'fw/theme/plugins/select2/select2.js');
-                $this->imprimir('js', 'fw/theme/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js');
                 $this->imprimir('js', 'fw/theme/plugins/bootstrap3-editable/js/bootstrap-editable.min.js');
                 $this->imprimir('js', 'fw/theme/plugins/gritter/js/jquery.gritter.min.js');
                 $this->imprimir('js', 'fw/theme/plugins/bs-validator/js/bootstrapValidator.min.js');
@@ -89,12 +74,6 @@ class Incluir
             case 'html_template':
                 $this->incluir('theme');
                 $this->incluir('general');
-                break;
-            case 'cnb_js':
-                $this->imprimir('js', 'app/js/cnb/Cnb.js');
-                break;
-            case 'stupidtable':
-                $this->imprimir('js', 'fw/js/stupidtable.min.js');
                 break;
             default:
                 # code...

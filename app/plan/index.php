@@ -30,7 +30,6 @@ $cl_grado = new ClGrado($bd);
     $libs->incluir('html_template');
     $libs->incluir('html_plan');
     $libs->incluir('cnb_js');
-    $libs->incluir('stupidtable');
     ?>
 </head>
 
@@ -181,14 +180,23 @@ $cl_grado = new ClGrado($bd);
         </form>
     </div>
 </body>
-<?php $libs->imprimir('js', 'app/js/plan/index.js'); ?>
+<?php
+$libs->imprimir('js', 'app/js/cnb/Cnb.js');
+$libs->imprimir('js', 'fw/js/stupidtable.min.js');
+$libs->imprimir('js', 'app/js/plan/index.js');
+?>
 <script>
 <?php
 $id_publica = $_GET['id'];
 if(!empty($id_publica)){
     $libs->incluir_clase('app/src/model/GnPlan.class.php');
     $libs->incluir_clase('app/src/model/GnClase.class.php');
+    $libs->incluir_clase('includes/auth/Login.class.php');
 
+    $id_publica = Login::desencriptar($id_publica);
+    $info_publica = explode('_', $id_publica);
+    $id_publica = intval($info_publica[0]) / intval($info_publica[1]);
+    
     $gn_plan = new GnPlan($bd);
     $gn_clase = new GnClase($bd);
 

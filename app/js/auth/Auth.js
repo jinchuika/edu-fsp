@@ -15,6 +15,9 @@ Auth.prototype.login = function(username, password) {
             if(respuesta.msj=='si'){
                 window.location = (respuesta.url ? respuesta.url : 'app');
             }
+            else if (respuesta.msj=='no'){
+                bootbox.alert('Los datos introducidos no son correctos.');
+            }
         }
     });
 };

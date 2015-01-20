@@ -174,7 +174,9 @@ function publicar_plan (id_plan, tipo) {
         tipo: tipo
     }, function (respuesta) {
         if(respuesta.msj=='si' && tipo==true){
-            bootbox.alert('Puede compartir su planificación usando el siguiente link<br><br><b>'+ location.host + location.pathname+'?id='+id_plan+'</b>');
+            var num_random = Math.floor((Math.random() * 9) + 1);
+            id_plan = id_plan * num_random;
+            bootbox.alert('Puede compartir su planificación usando el siguiente link<br><br><b>'+ location.host + location.pathname+'?id='+encriptar_string(id_plan+'_'+num_random)+'</b>');
         }
         if(respuesta.msj=='si' && tipo==false){
             $.gritter.add({
