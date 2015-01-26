@@ -46,7 +46,7 @@ class Login
     {
         $this->libs->incluir_clase('app/src/model/User.class.php');
         $user = new User($this->libs);
-        $campos = 'user._id, usr_persona._id as id_per, id_rol, username, nombre, apellido';
+        $campos = 'user._id, usr_persona._id as id_per, username, nombre, apellido';
         $usuario = $user->abrir_usuario(array('user._id'=>$id_user), $campos);
         if(!empty($usuario)){
             $this->libs->incluir_clase('includes/auth/Sesion.class.php');
@@ -56,7 +56,6 @@ class Login
             $sesion->set("apellido",$usuario['apellido']);
             $sesion->set("mail",$usuario['mail']);
             $sesion->set("id_user",$usuario['_id']);
-            $sesion->set("rol",$usuario['id_rol']);
             $sesion->set("id_per",$usuario['id_per']);
             $sesion->set("arr_permiso",$sesion->mostrar_permisos());
         }

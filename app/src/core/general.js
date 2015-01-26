@@ -129,6 +129,13 @@ function exportar_excel (id_tabla) {
     });
 }
 
+function activar_ayuda () {
+    $.getScript(nivel_entrada+'app/js/libs/Ayuda.class.js', function () {
+        var ayuda = new Ayuda();
+        ayuda.crearFormulario();
+    });
+}
+
 $.fn.goTo = function() {
     $('html, body').animate({
         scrollTop: $(this).offset().top + 'px'

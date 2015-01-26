@@ -15,6 +15,10 @@ $(document).ready(function () {
                     remote: {
                         message: 'El nombre de usuario no está disponible',
                         url: 'app/src/libs_usr/user.php?fn_nombre=validar_nombre'
+                    },
+                    regexp: {
+                        regexp: /^[A-Za-z0-9_]+$/,
+                        message: 'Solo se admiten letras, números y guiones bajos'
                     }
                 }
             },

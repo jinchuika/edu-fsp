@@ -271,7 +271,11 @@ class Menu {
               <ul class="nav navbar-nav">
                 '.$this->$tipo(array('class'=>'nav navbar-nav')).'
               </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#" onclick="activar_ayuda()">Ayuda</a></li>
+                </ul>
             </div>
+
           </div>
         </nav>';
         return $string;

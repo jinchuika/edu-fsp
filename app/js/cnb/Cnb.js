@@ -76,17 +76,3 @@ Cnb.prototype.set_data = function (datos_obtenidos, instancia_actual, callback) 
         callback();
     }
 };
-
-/**
- * Guarda el CNB como atributo de la instancia actual
- * @param {Array} datos_obtenidos
- 
-Cnb.prototype.set_data = function(datos_obtenidos) {
-    this.arr_competencia = datos_obtenidos.arr_competencia;
-    this.arr_indicador = datos_obtenidos.arr_indicador;
-    this.arr_contenido = datos_obtenidos.arr_contenido;
-    this.arr_rel_contenido = datos_obtenidos.arr_rel_contenido;
-    this.arr_funsepa = datos_obtenidos.arr_funsepa;
-    this.arr_metodo = datos_obtenidos.arr_metodo;
-    this.en_uso = [];
-};*/

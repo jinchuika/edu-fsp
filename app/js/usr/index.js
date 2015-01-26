@@ -98,6 +98,7 @@ $(document).ready(function () {
         disabled: true,
         validate: function (value) {
             if(!value) return 'No se admite vacío';
+            if(!(/^[A-Za-z0-9_]+$/.test(value))) return 'No se admiten espacios';
         },
         success: function (data, config) {
             console.log(config);

@@ -20,6 +20,7 @@ class Incluir
         for ($i=0; $i < $nivel_entrada; $i++) { 
             $this->nivel .= "../";
         }
+        spl_autoload_register(array($this, 'autoload_class'));
     }
     
     /**
@@ -150,6 +151,44 @@ class Incluir
     public function get_lista()
     {
         return $this->lista_incluido;
+    }
+
+    /**
+     * La función para hacer autoload de clases
+     * @param  string $class_name nombre de la clase (y el archivo)
+     */
+    private static function autoload_class($class_name) 
+    {
+        $array_paths = array(
+            'app/src/model/',
+            'app/src/core/',
+            'app/src/ctrl/',
+            'includes/auth/'
+            );
+
+        foreach($array_paths as $path)
+        {
+            $file = self::uri_relativa().$path.''.$class_name.'.class.php';
+            if(is_file($file)) 
+            {
+                include_once $file;
+                break;
+            }
+        }
+    }
+
+    /**
+     * Mapea la URI para obtener el nivel de la ruta a incluir
+     * @return string la ruta relativa en forma "../"
+     */
+    public static function uri_relativa()
+    {
+        $nivel_actual = substr_count($_SERVER['REQUEST_URI'], '/');
+        $ruta = '';
+        for ($i=1; $i < $nivel_actual-1; $i++) { 
+            $ruta .= '..'.'/';
+        }
+        return $ruta;
     }
 }
 ?>
