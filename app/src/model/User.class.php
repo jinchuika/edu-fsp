@@ -21,7 +21,7 @@ class User
      * @param  integer $id_escuela
      * @param  string  $username  
      * @param  string  $password  
-     * @param  Array  $args['extra']      Los parámetros opcionales
+     * @param  Array  $args      Los parámetros opcionales
      * @return Array
      */
     public function crear_usuario($args)
@@ -59,6 +59,12 @@ class User
         }
     }
 
+    /**
+     * Abre los datos del usuario y persona
+     * @param  Array  $filtros {campo, valor}
+     * @param  string $campos  Los campos que pide
+     * @return Array|boolean
+     */
     public function abrir_usuario(Array $filtros, $campos = '*')
     {
         if(is_array($filtros)){

@@ -33,8 +33,8 @@
 				<li><a href="class-CnbMetodo.html">CnbMetodo</a></li>
 				<li><a href="class-CnbRelContenido.html">CnbRelContenido</a></li>
 				<li><a href="class-Conf.html">Conf</a></li>
+				<li><a href="class-Controlador.html">Controlador</a></li>
 				<li><a href="class-Db.html">Db</a></li>
-				<li><a href="class-FPDF.html">FPDF</a></li>
 				<li><a href="class-GnClase.html">GnClase</a></li>
 				<li><a href="class-GnEscuela.html">GnEscuela</a></li>
 				<li><a href="class-GnPlan.html">GnPlan</a></li>
@@ -44,9 +44,12 @@
 				<li><a href="class-Link.html">Link</a></li>
 				<li><a href="class-Login.html">Login</a></li>
 				<li><a href="class-Menu.html">Menu</a></li>
+				<li><a href="class-PlnContenidoFunsepa.html">PlnContenidoFunsepa</a></li>
+				<li><a href="class-PlnMetodo.html">PlnMetodo</a></li>
 				<li><a href="class-PlnRegistro.html">PlnRegistro</a></li>
 				<li><a href="class-Sesion.html">Sesion</a></li>
 				<li><a href="class-User.html">User</a></li>
+				<li><a href="class-UsrRol.html">UsrRol</a></li>
 			</ul>
 
 			<h3>Interfaces</h3>
@@ -61,8 +64,8 @@
 				<li><a href="class-CnbMetodo.html">CnbMetodo</a></li>
 				<li><a href="class-CnbRelContenido.html">CnbRelContenido</a></li>
 				<li><a href="class-Conf.html">Conf</a></li>
+				<li><a href="class-Controlador.html">Controlador</a></li>
 				<li><a href="class-Db.html">Db</a></li>
-				<li><a href="class-FPDF.html">FPDF</a></li>
 				<li><a href="class-GnClase.html">GnClase</a></li>
 				<li><a href="class-GnEscuela.html">GnEscuela</a></li>
 				<li><a href="class-GnPlan.html">GnPlan</a></li>
@@ -72,25 +75,17 @@
 				<li><a href="class-Link.html">Link</a></li>
 				<li><a href="class-Login.html">Login</a></li>
 				<li><a href="class-Menu.html">Menu</a></li>
+				<li><a href="class-PlnContenidoFunsepa.html">PlnContenidoFunsepa</a></li>
+				<li><a href="class-PlnMetodo.html">PlnMetodo</a></li>
 				<li><a href="class-PlnRegistro.html">PlnRegistro</a></li>
 				<li><a href="class-Sesion.html">Sesion</a></li>
 				<li><a href="class-User.html">User</a></li>
+				<li><a href="class-UsrRol.html">UsrRol</a></li>
 			</ul>
 
 
 
 
-			<h3>Functions</h3>
-			<ul>
-				<li><a href="function-abrir_cnb.html">abrir_cnb</a></li>
-				<li><a href="function-abrir_info_plan.html">abrir_info_plan</a></li>
-				<li><a href="function-abrir_plan.html">abrir_plan</a></li>
-				<li><a href="function-abrir_registro.html">abrir_registro</a></li>
-				<li><a href="function-borrar_registro.html">borrar_registro</a></li>
-				<li><a href="function-crear_registro.html">crear_registro</a></li>
-				<li><a href="function-nuevo_plan.html">nuevo_plan</a></li>
-				<li><a href="function-publicar_plan.html">publicar_plan</a></li>
-			</ul>
 		</div>
 	</div>
 </div>
@@ -114,6 +109,9 @@
 <span>Class</span>			</li>
 		</ul>
 		<ul>
+			<li>
+				<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
+			</li>
 		</ul>
 		<ul>
 		</ul>
@@ -142,7 +140,7 @@
 				<code><a href="class-Db.html">Db</a></code> El motor de la DB<br>
 				<b>Uses:</b>
 				<code><a href="class-Conf.html">Conf</a></code> la condiguración del servidor<br>
-			<b>Located at</b> <a href="source-class-Incluir.html#2-170" title="Go to source code">core/incluir.php</a>
+			<b>Located at</b> <a href="source-class-Incluir.html#2-193" title="Go to source code">incluir.php</a>
 		<br>
 	</div>
 
@@ -162,7 +160,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___construct">#</a>
-		<code><a href="source-class-Incluir.html#12-22" title="Go to source code">__construct</a>( <span>integer <var>$nivel_entrada</var> = <span class="php-num">0</span></span> )</code>
+		<code><a href="source-class-Incluir.html#13-24" title="Go to source code">__construct</a>( <span>integer <var>$nivel_entrada</var> = <span class="php-num">0</span></span> )</code>
 
 		<div class="description short">
 			<p>Crea el objeto para incluir</p>
@@ -197,7 +195,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_incluir">#</a>
-		<code><a href="source-class-Incluir.html#24-98" title="Go to source code">incluir</a>( <span>string <var>$nombre_archivo</var></span>, <span>string <var>$extra</var> = <span class="php-keyword1">null</span></span>, <span>Array <var>$extra</var>,…</span> )</code>
+		<code><a href="source-class-Incluir.html#26-83" title="Go to source code">incluir</a>( <span>string <var>$nombre_archivo</var></span>, <span>string <var>$extra</var> = <span class="php-keyword1">null</span></span>, <span>Array <var>$extra</var>,…</span> )</code>
 
 		<div class="description short">
 			<p>Imprime el código necesario para incluir una librería</p>
@@ -240,7 +238,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_imprimir">#</a>
-		<code><a href="source-class-Incluir.html#100-134" title="Go to source code">imprimir</a>( <span>string <var>$tipo</var></span>, <span>string <var>$archivo</var></span>, <span>array <var>$extra_param</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Incluir.html#85-119" title="Go to source code">imprimir</a>( <span>string <var>$tipo</var></span>, <span>string <var>$archivo</var></span>, <span>array <var>$extra_param</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			<p>Imprime el texto HTML para incluir</p>
@@ -279,7 +277,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_incluir_clase">#</a>
-		<code><a href="source-class-Incluir.html#136-151" title="Go to source code">incluir_clase</a>( <span>string <var>$archivo</var> = <span class="php-quote">''</span></span>, <span>Array <var>$extra</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Incluir.html#121-136" title="Go to source code">incluir_clase</a>( <span>string <var>$archivo</var> = <span class="php-quote">''</span></span>, <span>Array <var>$extra</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			<p>incluye el archivo PHP donde esté una clase</p>
@@ -320,7 +318,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_agregar_lista">#</a>
-		<code><a href="source-class-Incluir.html#153-160" title="Go to source code">agregar_lista</a>( <span>string <var>$nombre_archivo</var></span> )</code>
+		<code><a href="source-class-Incluir.html#138-145" title="Go to source code">agregar_lista</a>( <span>string <var>$nombre_archivo</var></span> )</code>
 
 		<div class="description short">
 			<p>Agrega el archivo incluido a la lista de inclusiones actuales</p>
@@ -355,7 +353,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_lista">#</a>
-		<code><a href="source-class-Incluir.html#162-169" title="Go to source code">get_lista</a>( )</code>
+		<code><a href="source-class-Incluir.html#147-154" title="Go to source code">get_lista</a>( )</code>
 
 		<div class="description short">
 			<p>retorna la lista de archivos incluidos actualmente</p>
@@ -369,6 +367,40 @@
 				<h4>Returns</h4>
 				<div class="list">
 					array
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="uri_relativa" id="_uri_relativa">
+
+		<td class="attributes"><code>
+			 public static
+
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_uri_relativa">#</a>
+		<code><a href="source-class-Incluir.html#180-192" title="Go to source code">uri_relativa</a>( )</code>
+
+		<div class="description short">
+			<p>Mapea la URI para obtener el nivel de la ruta a incluir</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Mapea la URI para obtener el nivel de la ruta a incluir</p>
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					string<br>la ruta relativa en forma "../"
 				</div>
 
 
@@ -438,6 +470,31 @@
 		<td class="value">
 			<div>
 				<a href="#$camino_relativo" class="anchor">#</a>
+				<code><span class="php-quote">''</span></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="nivel" id="$nivel">
+		<td class="attributes"><code>
+			public  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Incluir.html#11" title="Go to source code"><var>$nivel</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$nivel" class="anchor">#</a>
 				<code><span class="php-quote">''</span></code>
 			</div>
 		</td>

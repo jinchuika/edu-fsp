@@ -1,0 +1,12 @@
+source:
+    - includes/auth
+    - app/src/model
+    - app/src/core
+    - app/src/ctrl
+
+destination: docs/api
+
+tree: Yes
+
+exclude:
+	- app/src/plugins

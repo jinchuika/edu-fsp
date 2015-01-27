@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta name="robots" content="noindex">
 
-	<title>File model/GnClase.class.php</title>
+	<title>File GnClase.class.php</title>
 
 	<link rel="stylesheet" href="resources/style.css?e99947befd7bf673c6b43ff75e9e0f170c88a60e">
 
@@ -34,8 +34,8 @@
 				<li><a href="class-CnbMetodo.html">CnbMetodo</a></li>
 				<li><a href="class-CnbRelContenido.html">CnbRelContenido</a></li>
 				<li><a href="class-Conf.html">Conf</a></li>
+				<li><a href="class-Controlador.html">Controlador</a></li>
 				<li><a href="class-Db.html">Db</a></li>
-				<li><a href="class-FPDF.html">FPDF</a></li>
 				<li><a href="class-GnClase.html">GnClase</a></li>
 				<li><a href="class-GnEscuela.html">GnEscuela</a></li>
 				<li><a href="class-GnPlan.html">GnPlan</a></li>
@@ -45,9 +45,12 @@
 				<li><a href="class-Link.html">Link</a></li>
 				<li><a href="class-Login.html">Login</a></li>
 				<li><a href="class-Menu.html">Menu</a></li>
+				<li><a href="class-PlnContenidoFunsepa.html">PlnContenidoFunsepa</a></li>
+				<li><a href="class-PlnMetodo.html">PlnMetodo</a></li>
 				<li><a href="class-PlnRegistro.html">PlnRegistro</a></li>
 				<li><a href="class-Sesion.html">Sesion</a></li>
-				<li class="active"><a href="class-User.html">User</a></li>
+				<li><a href="class-User.html">User</a></li>
+				<li class="active"><a href="class-UsrRol.html">UsrRol</a></li>
 			</ul>
 
 			<h3>Interfaces</h3>
@@ -62,8 +65,8 @@
 				<li><a href="class-CnbMetodo.html">CnbMetodo</a></li>
 				<li><a href="class-CnbRelContenido.html">CnbRelContenido</a></li>
 				<li><a href="class-Conf.html">Conf</a></li>
+				<li><a href="class-Controlador.html">Controlador</a></li>
 				<li><a href="class-Db.html">Db</a></li>
-				<li><a href="class-FPDF.html">FPDF</a></li>
 				<li><a href="class-GnClase.html">GnClase</a></li>
 				<li><a href="class-GnEscuela.html">GnEscuela</a></li>
 				<li><a href="class-GnPlan.html">GnPlan</a></li>
@@ -73,25 +76,17 @@
 				<li><a href="class-Link.html">Link</a></li>
 				<li><a href="class-Login.html">Login</a></li>
 				<li><a href="class-Menu.html">Menu</a></li>
+				<li><a href="class-PlnContenidoFunsepa.html">PlnContenidoFunsepa</a></li>
+				<li><a href="class-PlnMetodo.html">PlnMetodo</a></li>
 				<li><a href="class-PlnRegistro.html">PlnRegistro</a></li>
 				<li><a href="class-Sesion.html">Sesion</a></li>
-				<li class="active"><a href="class-User.html">User</a></li>
+				<li><a href="class-User.html">User</a></li>
+				<li class="active"><a href="class-UsrRol.html">UsrRol</a></li>
 			</ul>
 
 
 
 
-			<h3>Functions</h3>
-			<ul>
-				<li><a href="function-abrir_cnb.html">abrir_cnb</a></li>
-				<li><a href="function-abrir_info_plan.html">abrir_info_plan</a></li>
-				<li><a href="function-abrir_plan.html">abrir_plan</a></li>
-				<li><a href="function-abrir_registro.html">abrir_registro</a></li>
-				<li><a href="function-borrar_registro.html">borrar_registro</a></li>
-				<li><a href="function-crear_registro.html">crear_registro</a></li>
-				<li><a href="function-nuevo_plan.html">nuevo_plan</a></li>
-				<li class="active"><a href="function-publicar_plan.html">publicar_plan</a></li>
-			</ul>
 		</div>
 	</div>
 </div>
@@ -112,10 +107,13 @@
 				<a href="index.html" title="Overview"><span>Overview</span></a>
 			</li>
 			<li>
-				<a href="function-publicar_plan.html" title="Summary of publicar_plan"><span>Function</span></a>
+				<a href="class-UsrRol.html" title="Summary of UsrRol"><span>Class</span></a>
 			</li>
 		</ul>
 		<ul>
+			<li>
+				<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
+			</li>
 		</ul>
 		<ul>
 		</ul>
@@ -173,34 +171,41 @@
 </span><span id="50" class="l"><a href="#50">50: </a>        }
 </span><span id="51" class="l"><a href="#51">51: </a>    }
 </span><span id="52" class="l"><a href="#52">52: </a>
-</span><span id="53" class="l"><a href="#53">53: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> abrir_clase(<span class="php-var">$filtros</span>, <span class="php-var">$campos</span>=<span class="php-quote">'*'</span>, <span class="php-var">$extra</span>=<span class="php-quote">''</span>)
-</span><span id="54" class="l"><a href="#54">54: </a>    {
-</span><span id="55" class="l"><a href="#55">55: </a>        <span class="php-keyword1">if</span>(<span class="php-keyword2">is_array</span>(<span class="php-var">$filtros</span>)){
-</span><span id="56" class="l"><a href="#56">56: </a>            <span class="php-var">$condicion</span> = <span class="php-quote">' where gn_clase._id&gt;0  '</span>;
-</span><span id="57" class="l"><a href="#57">57: </a>            <span class="php-keyword1">foreach</span> (<span class="php-var">$filtros</span> <span class="php-keyword1">as</span> <span class="php-var">$key</span> =&gt; <span class="php-var">$filtro</span>) {
-</span><span id="58" class="l"><a href="#58">58: </a>                <span class="php-var">$condicion</span> .= <span class="php-quote">' and '</span>.<span class="php-var">$key</span>.<span class="php-quote">'=&quot;'</span>.<span class="php-var">$filtro</span>.<span class="php-quote">'&quot; '</span>;
-</span><span id="59" class="l"><a href="#59">59: </a>            }
-</span><span id="60" class="l"><a href="#60">60: </a>        }
-</span><span id="61" class="l"><a href="#61">61: </a>        <span class="php-var">$query</span> = <span class="php-quote">&quot;select &quot;</span>.<span class="php-var">$campos</span>.<span class="php-quote">&quot; from gn_clase &quot;</span>.<span class="php-var">$extra</span>.<span class="php-quote">&quot; &quot;</span>.<span class="php-var">$condicion</span>;
-</span><span id="62" class="l"><a href="#62">62: </a>        <span class="php-var">$stmt</span> = <span class="php-var">$this</span>-&gt;bd-&gt;ejecutar(<span class="php-var">$query</span>);
-</span><span id="63" class="l"><a href="#63">63: </a>        <span class="php-keyword1">if</span>(<span class="php-var">$clase</span> = <span class="php-var">$this</span>-&gt;bd-&gt;obtener_fila(<span class="php-var">$stmt</span>, <span class="php-num">0</span>)){
-</span><span id="64" class="l"><a href="#64">64: </a>            <span class="php-keyword1">return</span> <span class="php-var">$clase</span>;
-</span><span id="65" class="l"><a href="#65">65: </a>        }
-</span><span id="66" class="l"><a href="#66">66: </a>        <span class="php-keyword1">else</span>{
-</span><span id="67" class="l"><a href="#67">67: </a>            <span class="php-keyword1">echo</span> <span class="php-var">$query</span>;
-</span><span id="68" class="l"><a href="#68">68: </a>            <span class="php-keyword1">return</span> <span class="php-keyword1">false</span>;
-</span><span id="69" class="l"><a href="#69">69: </a>        }
-</span><span id="70" class="l"><a href="#70">70: </a>
-</span><span id="71" class="l"><a href="#71">71: </a>    }
-</span><span id="72" class="l"><a href="#72">72: </a>}
-</span><span id="73" class="l"><a href="#73">73: </a><span class="xlang">?&gt;</span></span></code></pre>
+</span><span id="53" class="l"><a href="#53">53: </a>    <span class="php-comment">/**
+</span></span><span id="54" class="l"><a href="#54">54: </a><span class="php-comment">     * Busca una clase
+</span></span><span id="55" class="l"><a href="#55">55: </a><span class="php-comment">     * @param  Array $filtros Los filtros de búsqueda
+</span></span><span id="56" class="l"><a href="#56">56: </a><span class="php-comment">     * @param  string $campos  Los campos a buscar
+</span></span><span id="57" class="l"><a href="#57">57: </a><span class="php-comment">     * @param  string $extra   Información extra como JOINS
+</span></span><span id="58" class="l"><a href="#58">58: </a><span class="php-comment">     * @return Array
+</span></span><span id="59" class="l"><a href="#59">59: </a><span class="php-comment">     */</span>
+</span><span id="60" class="l"><a href="#60">60: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> abrir_clase(<span class="php-var">$filtros</span>, <span class="php-var">$campos</span>=<span class="php-quote">'*'</span>, <span class="php-var">$extra</span>=<span class="php-quote">''</span>)
+</span><span id="61" class="l"><a href="#61">61: </a>    {
+</span><span id="62" class="l"><a href="#62">62: </a>        <span class="php-keyword1">if</span>(<span class="php-keyword2">is_array</span>(<span class="php-var">$filtros</span>)){
+</span><span id="63" class="l"><a href="#63">63: </a>            <span class="php-var">$condicion</span> = <span class="php-quote">' where gn_clase._id&gt;0  '</span>;
+</span><span id="64" class="l"><a href="#64">64: </a>            <span class="php-keyword1">foreach</span> (<span class="php-var">$filtros</span> <span class="php-keyword1">as</span> <span class="php-var">$key</span> =&gt; <span class="php-var">$filtro</span>) {
+</span><span id="65" class="l"><a href="#65">65: </a>                <span class="php-var">$condicion</span> .= <span class="php-quote">' and '</span>.<span class="php-var">$key</span>.<span class="php-quote">'=&quot;'</span>.<span class="php-var">$filtro</span>.<span class="php-quote">'&quot; '</span>;
+</span><span id="66" class="l"><a href="#66">66: </a>            }
+</span><span id="67" class="l"><a href="#67">67: </a>        }
+</span><span id="68" class="l"><a href="#68">68: </a>        <span class="php-var">$query</span> = <span class="php-quote">&quot;select &quot;</span>.<span class="php-var">$campos</span>.<span class="php-quote">&quot; from gn_clase &quot;</span>.<span class="php-var">$extra</span>.<span class="php-quote">&quot; &quot;</span>.<span class="php-var">$condicion</span>;
+</span><span id="69" class="l"><a href="#69">69: </a>        <span class="php-var">$stmt</span> = <span class="php-var">$this</span>-&gt;bd-&gt;ejecutar(<span class="php-var">$query</span>);
+</span><span id="70" class="l"><a href="#70">70: </a>        <span class="php-keyword1">if</span>(<span class="php-var">$clase</span> = <span class="php-var">$this</span>-&gt;bd-&gt;obtener_fila(<span class="php-var">$stmt</span>, <span class="php-num">0</span>)){
+</span><span id="71" class="l"><a href="#71">71: </a>            <span class="php-keyword1">return</span> <span class="php-var">$clase</span>;
+</span><span id="72" class="l"><a href="#72">72: </a>        }
+</span><span id="73" class="l"><a href="#73">73: </a>        <span class="php-keyword1">else</span>{
+</span><span id="74" class="l"><a href="#74">74: </a>            <span class="php-keyword1">echo</span> <span class="php-var">$query</span>;
+</span><span id="75" class="l"><a href="#75">75: </a>            <span class="php-keyword1">return</span> <span class="php-keyword1">false</span>;
+</span><span id="76" class="l"><a href="#76">76: </a>        }
+</span><span id="77" class="l"><a href="#77">77: </a>
+</span><span id="78" class="l"><a href="#78">78: </a>    }
+</span><span id="79" class="l"><a href="#79">79: </a>}
+</span><span id="80" class="l"><a href="#80">80: </a><span class="xlang">?&gt;</span></span></code></pre>
 
 	<div id="footer">
 		 API documentation generated by <a href="http://apigen.org">ApiGen</a>
 	</div>
 </div>
 </div>
-<script src="resources/combined.js?7bb7fcc1cf8566355c6d31ea94d49211bdac0240"></script>
-<script src="elementlist.js?d2a77c807190492a9d1eb18681c5cac7bf51dfb9"></script>
+<script src="resources/combined.js?ed4a4e8ed2a8807f8657e5bbd6c69f5d5d152f4a"></script>
+<script src="elementlist.js?b465012bcf8b14941e5bfee6f3c180ff4f5681bd"></script>
 </body>
 </html>

@@ -11,28 +11,32 @@ Herramientas usadas
 
 ### Estructura del sistema
 ```
-edu/
-├── app/
-│   ├── js/
-│   ├── plan/
-│   ├── seminario/
-│   ├── src/
-│   │   ├── core/
-│   │   ├── libs_gn/
-│   │   ├── libs_plan/
-│   │   ├── libs_usr/
-│   │   ├── model/
-│   │   └── plugins/
-│   └── usr/
-├── fw/
-│   ├── bs/
-│   ├── css/
-│   ├── js/
-│   └── theme/
-├── includes/
-│   ├── auth/
-│   └── libs/
-└── media/
+edu
+├── app
+│   ├── js
+│   │   ├── auth
+│   │   ├── cnb
+│   │   ├── gn
+│   │   ├── libs
+│   │   ├── plan
+│   │   └── usr
+│   ├── plan
+│   ├── public
+│   ├── seminario
+│   ├── src
+│   │   ├── core
+│   │   ├── ctrl
+│   │   ├── libs_gn
+│   │   ├── libs_plan
+│   │   ├── libs_usr
+│   │   ├── model
+│   │   └── plugins
+│   └── usr
+├── includes
+│   ├── auth
+│   └── libs
+└── media
+    └── cnb
 ```
 ## Copyright y licencia
 El proyecto fue desarrollado por la Fundación Sergio Paiz Andrade. El código se liberó bajo una licencia [GPL v3.0] [licencia].

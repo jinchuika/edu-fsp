@@ -29,6 +29,12 @@ class GnEscuela
         return $respuesta;
     }
 
+    /**
+     * Abre los datos de una escuela
+     * @param  Array  $filtros {campo, valor}
+     * @param  string $campos  Los campos a buscar
+     * @return Array
+     */
     public function abrir_escuela(Array $filtros, $campos='*')
     {
         if(is_array($filtros)){

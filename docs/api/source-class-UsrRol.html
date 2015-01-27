@@ -2,8 +2,9 @@
 <html>
 <head>
 	<meta charset="utf-8">
+	<meta name="robots" content="noindex">
 
-	<title>Function abrir_cnb</title>
+	<title>File UsrRol.class.php</title>
 
 	<link rel="stylesheet" href="resources/style.css?e99947befd7bf673c6b43ff75e9e0f170c88a60e">
 
@@ -33,8 +34,8 @@
 				<li><a href="class-CnbMetodo.html">CnbMetodo</a></li>
 				<li><a href="class-CnbRelContenido.html">CnbRelContenido</a></li>
 				<li><a href="class-Conf.html">Conf</a></li>
+				<li><a href="class-Controlador.html">Controlador</a></li>
 				<li><a href="class-Db.html">Db</a></li>
-				<li><a href="class-FPDF.html">FPDF</a></li>
 				<li><a href="class-GnClase.html">GnClase</a></li>
 				<li><a href="class-GnEscuela.html">GnEscuela</a></li>
 				<li><a href="class-GnPlan.html">GnPlan</a></li>
@@ -44,9 +45,12 @@
 				<li><a href="class-Link.html">Link</a></li>
 				<li><a href="class-Login.html">Login</a></li>
 				<li><a href="class-Menu.html">Menu</a></li>
+				<li><a href="class-PlnContenidoFunsepa.html">PlnContenidoFunsepa</a></li>
+				<li><a href="class-PlnMetodo.html">PlnMetodo</a></li>
 				<li><a href="class-PlnRegistro.html">PlnRegistro</a></li>
 				<li><a href="class-Sesion.html">Sesion</a></li>
-				<li class="active"><a href="class-User.html">User</a></li>
+				<li><a href="class-User.html">User</a></li>
+				<li class="active"><a href="class-UsrRol.html">UsrRol</a></li>
 			</ul>
 
 			<h3>Interfaces</h3>
@@ -61,8 +65,8 @@
 				<li><a href="class-CnbMetodo.html">CnbMetodo</a></li>
 				<li><a href="class-CnbRelContenido.html">CnbRelContenido</a></li>
 				<li><a href="class-Conf.html">Conf</a></li>
+				<li><a href="class-Controlador.html">Controlador</a></li>
 				<li><a href="class-Db.html">Db</a></li>
-				<li><a href="class-FPDF.html">FPDF</a></li>
 				<li><a href="class-GnClase.html">GnClase</a></li>
 				<li><a href="class-GnEscuela.html">GnEscuela</a></li>
 				<li><a href="class-GnPlan.html">GnPlan</a></li>
@@ -72,25 +76,17 @@
 				<li><a href="class-Link.html">Link</a></li>
 				<li><a href="class-Login.html">Login</a></li>
 				<li><a href="class-Menu.html">Menu</a></li>
+				<li><a href="class-PlnContenidoFunsepa.html">PlnContenidoFunsepa</a></li>
+				<li><a href="class-PlnMetodo.html">PlnMetodo</a></li>
 				<li><a href="class-PlnRegistro.html">PlnRegistro</a></li>
 				<li><a href="class-Sesion.html">Sesion</a></li>
-				<li class="active"><a href="class-User.html">User</a></li>
+				<li><a href="class-User.html">User</a></li>
+				<li class="active"><a href="class-UsrRol.html">UsrRol</a></li>
 			</ul>
 
 
 
 
-			<h3>Functions</h3>
-			<ul>
-				<li class="active"><a href="function-abrir_cnb.html">abrir_cnb</a></li>
-				<li><a href="function-abrir_info_plan.html">abrir_info_plan</a></li>
-				<li><a href="function-abrir_plan.html">abrir_plan</a></li>
-				<li><a href="function-abrir_registro.html">abrir_registro</a></li>
-				<li><a href="function-borrar_registro.html">borrar_registro</a></li>
-				<li><a href="function-crear_registro.html">crear_registro</a></li>
-				<li><a href="function-nuevo_plan.html">nuevo_plan</a></li>
-				<li><a href="function-publicar_plan.html">publicar_plan</a></li>
-			</ul>
 		</div>
 	</div>
 </div>
@@ -110,68 +106,35 @@
 			<li>
 				<a href="index.html" title="Overview"><span>Overview</span></a>
 			</li>
-			<li class="active">
-<span>Function</span>			</li>
+			<li>
+				<a href="class-UsrRol.html" title="Summary of UsrRol"><span>Class</span></a>
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
+			</li>
 		</ul>
 		<ul>
 		</ul>
-		<ul>
-		</ul>
 	</div>
 
-<div id="content" class="function">
-	<h1>Function abrir_cnb</h1>
-
-
-	<div class="description">
-	<p>Carga el CNB desde la base de datos</p>
-	</div>
-
-	<div class="info">
-		
-		
-		<b>Located at</b>
-		<a href="source-function-abrir_cnb.html#16-62" title="Go to source code">
-			libs_plan/cnb.php
-		</a><br>
-	</div>
-
-
-	<table class="summary" id="parameters">
-	<caption>Parameters summary</caption>
-	<tr id="$filtros">
-		<td class="name"><code>Array</code></td>
-		<td class="value"><code><var>$filtros</var> = <span class="php-keyword1">null</span></code></td>
-		<td></td>
-	</tr>
-	<tr id="$tipo">
-		<td class="name"><code>string</code></td>
-		<td class="value"><code><var>$tipo</var> = <span class="php-quote">'lista'</span></code></td>
-		<td>'object' o 'lista' para una lista por campo</td>
-	</tr>
-	</table>
-
-	<table class="summary" id="returns">
-	<caption>Return value summary</caption>
-	<tr>
-		<td class="name"><code>
-			Array
-		</code></td>
-		<td>
-			Array
-		</td>
-	</tr>
-	</table>
-
-
-</div>
+<pre><code><span id="1" class="l"><a href="#1">1: </a><span class="xlang">&lt;?php</span>
+</span><span id="2" class="l"><a href="#2">2: </a><span class="php-comment">/**
+</span></span><span id="3" class="l"><a href="#3">3: </a><span class="php-comment"> * Clase para control de roles de usuario
+</span></span><span id="4" class="l"><a href="#4">4: </a><span class="php-comment"> */</span>
+</span><span id="5" class="l"><a href="#5">5: </a><span class="php-keyword1">class</span> UsrRol
+</span><span id="6" class="l"><a href="#6">6: </a>{
+</span><span id="7" class="l"><a href="#7">7: </a>    
+</span><span id="8" class="l"><a href="#8">8: </a>}
+</span><span id="9" class="l"><a href="#9">9: </a><span class="xlang">?&gt;</span></span></code></pre>
 
 	<div id="footer">
 		 API documentation generated by <a href="http://apigen.org">ApiGen</a>
 	</div>
 </div>
 </div>
-<script src="resources/combined.js?7bb7fcc1cf8566355c6d31ea94d49211bdac0240"></script>
-<script src="elementlist.js?d2a77c807190492a9d1eb18681c5cac7bf51dfb9"></script>
+<script src="resources/combined.js?ed4a4e8ed2a8807f8657e5bbd6c69f5d5d152f4a"></script>
+<script src="elementlist.js?b465012bcf8b14941e5bfee6f3c180ff4f5681bd"></script>
 </body>
 </html>

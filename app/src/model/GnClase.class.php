@@ -50,6 +50,13 @@ class GnClase
         }
     }
 
+    /**
+     * Busca una clase
+     * @param  Array $filtros Los filtros de búsqueda
+     * @param  string $campos  Los campos a buscar
+     * @param  string $extra   Información extra como JOINS
+     * @return Array
+     */
     public function abrir_clase($filtros, $campos='*', $extra='')
     {
         if(is_array($filtros)){

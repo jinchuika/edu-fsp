@@ -5,9 +5,5 @@
 class UsrRol
 {
 	
-	function __construct(argument)
-	{
-		# code...
-	}
 }
 ?>

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 
-	<title>Class CnbFunsepa</title>
+	<title>Class PlnContenidoFunsepa</title>
 
 	<link rel="stylesheet" href="resources/style.css?e99947befd7bf673c6b43ff75e9e0f170c88a60e">
 
@@ -28,7 +28,7 @@
 				<li><a href="class-ClGrado.html">ClGrado</a></li>
 				<li><a href="class-CnbCompetencia.html">CnbCompetencia</a></li>
 				<li><a href="class-CnbContenido.html">CnbContenido</a></li>
-				<li class="active"><a href="class-CnbFunsepa.html">CnbFunsepa</a></li>
+				<li><a href="class-CnbFunsepa.html">CnbFunsepa</a></li>
 				<li><a href="class-CnbIndicador.html">CnbIndicador</a></li>
 				<li><a href="class-CnbMetodo.html">CnbMetodo</a></li>
 				<li><a href="class-CnbRelContenido.html">CnbRelContenido</a></li>
@@ -44,7 +44,7 @@
 				<li><a href="class-Link.html">Link</a></li>
 				<li><a href="class-Login.html">Login</a></li>
 				<li><a href="class-Menu.html">Menu</a></li>
-				<li><a href="class-PlnContenidoFunsepa.html">PlnContenidoFunsepa</a></li>
+				<li class="active"><a href="class-PlnContenidoFunsepa.html">PlnContenidoFunsepa</a></li>
 				<li><a href="class-PlnMetodo.html">PlnMetodo</a></li>
 				<li><a href="class-PlnRegistro.html">PlnRegistro</a></li>
 				<li><a href="class-Sesion.html">Sesion</a></li>
@@ -59,7 +59,7 @@
 				<li><a href="class-ClGrado.html">ClGrado</a></li>
 				<li><a href="class-CnbCompetencia.html">CnbCompetencia</a></li>
 				<li><a href="class-CnbContenido.html">CnbContenido</a></li>
-				<li class="active"><a href="class-CnbFunsepa.html">CnbFunsepa</a></li>
+				<li><a href="class-CnbFunsepa.html">CnbFunsepa</a></li>
 				<li><a href="class-CnbIndicador.html">CnbIndicador</a></li>
 				<li><a href="class-CnbMetodo.html">CnbMetodo</a></li>
 				<li><a href="class-CnbRelContenido.html">CnbRelContenido</a></li>
@@ -75,7 +75,7 @@
 				<li><a href="class-Link.html">Link</a></li>
 				<li><a href="class-Login.html">Login</a></li>
 				<li><a href="class-Menu.html">Menu</a></li>
-				<li><a href="class-PlnContenidoFunsepa.html">PlnContenidoFunsepa</a></li>
+				<li class="active"><a href="class-PlnContenidoFunsepa.html">PlnContenidoFunsepa</a></li>
 				<li><a href="class-PlnMetodo.html">PlnMetodo</a></li>
 				<li><a href="class-PlnRegistro.html">PlnRegistro</a></li>
 				<li><a href="class-Sesion.html">Sesion</a></li>
@@ -118,9 +118,12 @@
 	</div>
 
 <div id="content" class="class">
-	<h1>Class CnbFunsepa</h1>
+	<h1>Class PlnContenidoFunsepa</h1>
 
 
+	<div class="description">
+	<p>Controla la tabla pln_contenido_funsepa (contenido de funsepa para cada registro)</p>
+	</div>
 
 
 
@@ -136,7 +139,7 @@
 		
 		
 
-			<b>Located at</b> <a href="source-class-CnbFunsepa.html#2-38" title="Go to source code">CnbFunsepa.class.php</a>
+			<b>Located at</b> <a href="source-class-PlnContenidoFunsepa.html#2-58" title="Go to source code">PlnContenidoFunsepa.class.php</a>
 		<br>
 	</div>
 
@@ -156,16 +159,21 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___construct">#</a>
-		<code><a href="source-class-CnbFunsepa.html#4-13" title="Go to source code">__construct</a>( <span> <var>$bd</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-PlnContenidoFunsepa.html#8-23" title="Go to source code">__construct</a>( <span><code><a href="class-Incluir.html">Incluir</a></code> <var>$libs</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
-			
+			<p>Establece la conexion a la base de datos</p>
 		</div>
 
 		<div class="description detailed hidden">
-			
+			<p>Establece la conexion a la base de datos</p>
 
 
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$libs</var></dt>
+					<dd>Objeto para incluir</dd>
+				</dl></div>
 
 
 
@@ -174,7 +182,7 @@
 		</div>
 		</div></td>
 	</tr>
-	<tr data-order="abrir_funsepa" id="_abrir_funsepa">
+	<tr data-order="crear_pln_funsepa" id="_crear_pln_funsepa">
 
 		<td class="attributes"><code>
 			 public 
@@ -185,26 +193,69 @@
 		</td>
 
 		<td class="name"><div>
-		<a class="anchor" href="#_abrir_funsepa">#</a>
-		<code><a href="source-class-CnbFunsepa.html#15-37" title="Go to source code">abrir_funsepa</a>( <span>Array <var>$arr_filtro</var> = <span class="php-keyword1">null</span></span> )</code>
+		<a class="anchor" href="#_crear_pln_funsepa">#</a>
+		<code><a href="source-class-PlnContenidoFunsepa.html#25-43" title="Go to source code">crear_pln_funsepa</a>( <span>integer <var>$id_registro</var></span>, <span>integer <var>$id_funsepa</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
-			<p>Abre un registro del contenido FUNSEPA</p>
+			<p>Crea un nuevo registro de pln_contenido_funsepa</p>
 		</div>
 
 		<div class="description detailed hidden">
-			<p>Abre un registro del contenido FUNSEPA</p>
+			<p>Crea un nuevo registro de pln_contenido_funsepa</p>
 
 
 				<h4>Parameters</h4>
 				<div class="list"><dl>
-					<dt><var>$arr_filtro</var></dt>
-					<dd></dd>
+					<dt><var>$id_registro</var></dt>
+					<dd>El registro al que se agregar el pln_contenido_funsepa</dd>
+					<dt><var>$id_funsepa</var></dt>
+					<dd>El id del pln_contenido_funsepa</dd>
 				</dl></div>
 
 				<h4>Returns</h4>
 				<div class="list">
-					Array
+					Array<br>{msj, _id}
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="eliminar_pln_funsepa" id="_eliminar_pln_funsepa">
+
+		<td class="attributes"><code>
+			 public 
+
+			boolean
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_eliminar_pln_funsepa">#</a>
+		<code><a href="source-class-PlnContenidoFunsepa.html#45-57" title="Go to source code">eliminar_pln_funsepa</a>( <span>string <var>$campo</var></span>, <span>string <var>$valor</var></span> )</code>
+
+		<div class="description short">
+			<p>Elimina un registro de pln_contenido_funsepa basado en cualquier parámetro</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Elimina un registro de pln_contenido_funsepa basado en cualquier parámetro</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$campo</var></dt>
+					<dd>El criterio para eliminar</dd>
+					<dt><var>$valor</var></dt>
+					<dd>El valor de ese campo</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					boolean<br>si lo eliminó o no
 				</div>
 
 
@@ -226,6 +277,34 @@
 
 
 
+	<table class="summary properties" id="properties">
+	<caption>Properties summary</caption>
+	<tr data-order="bd" id="$bd">
+		<td class="attributes"><code>
+			protected  
+			
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-PlnContenidoFunsepa.html#7" title="Go to source code"><var>$bd</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$bd" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
+	</table>
 
 
 
