@@ -52,6 +52,10 @@ if($fn_nombre=='editar_registro'){
     echo json_encode(editar_registro($_POST['pk'], $_POST['name'], $_POST['value']));
 }
 
+if($fn_nombre=='editar_fecha'){
+    echo json_encode(editar_fecha($_POST['pk'], $_POST['name'], $_POST['value']));
+}
+
 /**
  * Crea un nuevo plan o devuelve uno que tenga los mismos atributos
  * @param  integet $anno
@@ -183,6 +187,16 @@ function editar_registro($id_registro, $campo, $value='')
     $pln_registro = new PlnRegistro();
     $respuesta = array('msj' => 'no');
     if($pln_registro->editar_registro($id_registro, $campo, $value)){
+        $respuesta['msj'] = 'si';
+    }
+    return $respuesta;
+}
+
+function editar_fecha($id_registro, $campo, $value='')
+{
+    $pln_registro = new PlnRegistro();
+    $respuesta = array('msj' => 'no');
+    if($pln_registro->editar_registro($id_registro, $campo, implode("-",array_reverse(explode("/",$value))))){
         $respuesta['msj'] = 'si';
     }
     return $respuesta;

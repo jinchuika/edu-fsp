@@ -99,7 +99,7 @@ function abrir_info_usuario (id_plan) {
  * @uses bloquear_contenido_cnb()
  */
 function abrir_registro (registro, objetivo) {
-    var s_fecha = '<td id="fecha_'+registro._id+'" class="td_fecha" data-id="'+registro._id+'">'+formato_fecha(registro.fecha)+'</td>';
+    var s_fecha = '<td id="fecha_'+registro._id+'" class="td_fecha" data-id="'+registro._id+'"><a href="#" class="fecha_registro" data-pk="'+registro._id+'" data-name="fecha">'+formato_fecha(registro.fecha)+'</a></td>';
     var contenido = bloquear_contenido_cnb(registro.id_contenido).descripcion;
     var s_contenido = '<td id="contenido_'+registro._id+'" data-id="'+registro.id_contenido+'">'+contenido+'</td>';
     
@@ -202,13 +202,24 @@ function habilitar_edicion_plan (accion) {
             url: nivel_entrada+'app/src/libs_plan/gn_plan.php?fn_nombre=editar_registro',
             placement: 'left'
         });
-        
+        $('.fecha_registro').editable({
+            url: nivel_entrada+'app/src/libs_plan/gn_plan.php?fn_nombre=editar_fecha',
+            placement: 'right',
+            validate: function (value) {
+                var anno_actual = $("#anno option[value='"+__CNB__.plan_actual.id_anno+"']").text(),
+                fecha_nueva = value.split('/');
+                if(anno_actual !== fecha_nueva[2]) return 'El año no coincide';
+                if(!value) return 'No se admite vacío';
+                if(!(validar_fecha(value))) return 'Formato de fecha incorrecto';
+            }
+        });
         $('#btn_editar').text('Editar (On)')
         .removeClass('btn-warning').addClass('btn-info')
         .attr('onclick', 'habilitar_edicion_plan(false)');
     }
     else{
         $('.campo_registro').editable('destroy');
+        $('.fecha_registro').editable('destroy');
         
         $('#btn_editar').text('Editar (Off)')
         .removeClass('btn-info').addClass('btn-warning')
